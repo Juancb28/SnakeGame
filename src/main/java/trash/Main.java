@@ -1,5 +1,6 @@
-package ec.edu.epn.snakegame;
+package trash;
 
+import ec.edu.epn.snakegame.KeyDirections;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -23,9 +24,10 @@ public class Main extends Application {
     private final KeyDirections direction = KeyDirections.UP;
 
     @Override
-    public void start(Stage gameScreen) throws IOException {
+    public void start(Stage stage) throws IOException {
 
 
+        Stage gameScreen = new Stage();
         Group gameScreenComponents = new Group();
         Scene gameScreenScene = new Scene(gameScreenComponents, SCREENCANVASWIDTH, SCREENHEIGHT);
 
@@ -42,7 +44,7 @@ public class Main extends Application {
 
         //Set icon to app
         Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/SNAKE_GAME.png")));
-        gameScreen.getIcons().add(icon);
+        stage.getIcons().add(icon);
 
 
         Canvas gameZone = new Canvas();
@@ -72,14 +74,43 @@ public class Main extends Application {
         // Check if snake has collided with limits or its own body
         drawSnake(gc); // // Draw the new one
 
+        /*
+         *         gc.setFill(Color.RED);
+         *         gc.fillRect(snakeWay.get(0)[0], snakeWay.get(0)[1], snakeBody, snakeBody);
+         *         gc.setFill(Color.RED);
+         *         gc.fillRect(snakeWay.get(1)[0], snakeWay.get(1)[1], snakeBody, snakeBody);
+         *         gc.setFill(Color.RED);
+         *         gc.fillRect(snakeWay.get(2)[0], snakeWay.get(2)[1], snakeBody, snakeBody);
+         *         gc.setFill(Color.RED);
+         *         gc.fillRect(snakeWay.get(3)[0], snakeWay.get(3)[1], snakeBody, snakeBody);
+         */
+
+
         gameScreenComponents.getChildren().add(gameZone);
 
     }
 
     public void playing() {
+        int[] head = snakeWay.getFirst();
+        int newX = head[0];
+        int newY = head[1];
+
+        switch (direction) {
+            case KeyDirections.UP -> newY--;
+            case KeyDirections.DOWN -> newY++;
+            case KeyDirections.LEFT -> newX--;
+            case KeyDirections.RIGHT -> newX++;
+        }
     }
 
     public void drawSnake(GraphicsContext gc) {
+        /*
+        snakeWay.add(new int[]{ 0, 0});
+        snakeWay.add(new int[]{ snakeBody, 0});
+        snakeWay.add(new int[]{ snakeBody * 2, 0});
+        snakeWay.add(new int[]{ snakeBody * 3, 0});
+         */
+
 
     }
 
