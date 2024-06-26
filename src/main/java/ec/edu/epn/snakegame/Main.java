@@ -25,11 +25,8 @@ public class Main extends Application {
     @Override
     public void start(Stage gameScreen) throws IOException {
 
-
         Group gameScreenComponents = new Group();
         Scene gameScreenScene = new Scene(gameScreenComponents, SCREENCANVASWIDTH, SCREENHEIGHT);
-
-
 
         //Set stage to a specific size
         gameScreen.setScene(gameScreenScene);
