@@ -1,121 +1,131 @@
 package trash;
 
-import ec.edu.epn.snakegame.KeyDirections;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
-import java.io.IOException;
 import java.util.LinkedList;
-import java.util.Objects;
+import java.util.Random;
 
 public class Main extends Application {
-    static final Integer SNAKEBODY = 35, SCREENCANVASWIDTH = 800, CANVASHEIGHT = 570,
-            SCREENHEIGHT = 600;
+    private static final int WIDTH = 22;
+    private static final int HEIGHT = 22;
+    private static final int TILE_SIZE = 20;
+    private static final int CANVAS_WIDTH = WIDTH * TILE_SIZE;
+    private static final int CANVAS_HEIGHT = HEIGHT * TILE_SIZE;
 
-    LinkedList<int[]> snakeWay = new LinkedList<>();
+    private enum Direction {UP, DOWN, LEFT, RIGHT}
 
-    private final KeyDirections direction = KeyDirections.UP;
+    private Direction direction = Direction.RIGHT;
+    private LinkedList<int[]> snake = new LinkedList<>();
+    private int[] food = new int[2];
+    private boolean running = true;
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage primaryStage) {
+        Canvas canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(200), e -> run(gc)));
+        timeline.setCycleCount(Timeline.INDEFINITE);
 
+        StackPane root = new StackPane(canvas);
+        Scene scene = new Scene(root, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-        Stage gameScreen = new Stage();
-        Group gameScreenComponents = new Group();
-        Scene gameScreenScene = new Scene(gameScreenComponents, SCREENCANVASWIDTH, SCREENHEIGHT);
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.UP && direction != Direction.DOWN) direction = Direction.UP;
+            else if (event.getCode() == KeyCode.DOWN && direction != Direction.UP) direction = Direction.DOWN;
+            else if (event.getCode() == KeyCode.LEFT && direction != Direction.RIGHT) direction = Direction.LEFT;
+            else if (event.getCode() == KeyCode.RIGHT && direction != Direction.LEFT) direction = Direction.RIGHT;
+        });
 
+        primaryStage.setTitle("Snake Game");
+        primaryStage.setScene(scene);
+        primaryStage.show();
 
-
-        //Set stage to a specific size
-        gameScreen.setScene(gameScreenScene);
-        gameScreen.setResizable(false);
-        gameScreen.setWidth(800);
-        gameScreen.setHeight(600);
-        gameScreen.setX(540);
-        gameScreen.setY(240);
-        gameScreen.show();
-
-        //Set icon to app
-        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/SNAKE_GAME.png")));
-        stage.getIcons().add(icon);
-
-
-        Canvas gameZone = new Canvas();
-        GraphicsContext gc = gameZone.getGraphicsContext2D();
-
-        gameZone.setWidth(SCREENCANVASWIDTH);
-        gameZone.setHeight(CANVASHEIGHT);
-
-        ImageView iv = new ImageView();
-        iv.setImage(icon);
-        iv.setX(0);
-        iv.setY(0);
-        iv.setFitHeight(50);
-        iv.setFitWidth(50);
-        gameScreenComponents.getChildren().add(iv);
-
-        // Game zone with green yellow
-        gc.setFill(Color.GREENYELLOW);
-        gc.fillRect(0, 0, 800, 500);
-        // X: posicion, Y: posicion, Xt: Tamanyo posicion, Yt: tamanyo posicion
-
-        /**
-         * todo: limits' game zone for height is 465 and width 750, only use snake with 35x35
-         */
-
-        //playing(); // Move snake
-        // Check if snake has collided with limits or its own body
-        drawSnake(gc); // // Draw the new one
-
-        /*
-         *         gc.setFill(Color.RED);
-         *         gc.fillRect(snakeWay.get(0)[0], snakeWay.get(0)[1], snakeBody, snakeBody);
-         *         gc.setFill(Color.RED);
-         *         gc.fillRect(snakeWay.get(1)[0], snakeWay.get(1)[1], snakeBody, snakeBody);
-         *         gc.setFill(Color.RED);
-         *         gc.fillRect(snakeWay.get(2)[0], snakeWay.get(2)[1], snakeBody, snakeBody);
-         *         gc.setFill(Color.RED);
-         *         gc.fillRect(snakeWay.get(3)[0], snakeWay.get(3)[1], snakeBody, snakeBody);
-         */
-
-
-        gameScreenComponents.getChildren().add(gameZone);
-
+        startGame();
+        timeline.play();
     }
 
-    public void playing() {
-        int[] head = snakeWay.getFirst();
+    private void startGame() {
+        snake.clear();
+        snake.add(new int[]{WIDTH / 2, HEIGHT / 2});
+        placeFood();
+    }
+
+    private void placeFood() {
+        Random rand = new Random();
+        food[0] = rand.nextInt(WIDTH);
+        food[1] = rand.nextInt(HEIGHT);
+    }
+
+    private void run(GraphicsContext gc) {
+        if (!running) {
+            gc.setFill(Color.RED);
+            gc.fillText("Game Over", CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+            return;
+        }
+
+        moveSnake();
+        checkCollision();
+        draw(gc);
+    }
+
+    private void moveSnake() {
+        int[] head = snake.getFirst();
         int newX = head[0];
         int newY = head[1];
 
         switch (direction) {
-            case KeyDirections.UP -> newY--;
-            case KeyDirections.DOWN -> newY++;
-            case KeyDirections.LEFT -> newX--;
-            case KeyDirections.RIGHT -> newX++;
+            case UP -> newY--;
+            case DOWN -> newY++;
+            case LEFT -> newX--;
+            case RIGHT -> newX++;
+        }
+
+        int[] newHead = {newX, newY};
+        snake.addFirst(newHead);
+
+        if (newHead[0] == food[0] && newHead[1] == food[1]) {
+            placeFood();
+        } else {
+            snake.removeLast();
         }
     }
 
-    public void drawSnake(GraphicsContext gc) {
-        /*
-        snakeWay.add(new int[]{ 0, 0});
-        snakeWay.add(new int[]{ snakeBody, 0});
-        snakeWay.add(new int[]{ snakeBody * 2, 0});
-        snakeWay.add(new int[]{ snakeBody * 3, 0});
-         */
+    private void checkCollision() {
+        int[] head = snake.getFirst();
+        if (head[0] < 0 || head[0] >= WIDTH || head[1] < 0 || head[1] >= HEIGHT) {
+            running = false;
+        }
 
-
+        for (int i = 1; i < snake.size(); i++) {
+            if (head[0] == snake.get(i)[0] && head[1] == snake.get(i)[1]) {
+                running = false;
+            }
+        }
     }
 
+    private void draw(GraphicsContext gc) {
+        gc.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+        gc.setFill(Color.GREEN);
+        for (int[] part : snake) {
+            gc.fillRect(part[0] * TILE_SIZE, part[1] * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        }
+
+        gc.setFill(Color.RED);
+        gc.fillRect(food[0] * TILE_SIZE, food[1] * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 }

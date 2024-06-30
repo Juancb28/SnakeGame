@@ -36,25 +36,29 @@ public class Main extends Application {
         Scene gameScreenScene = new Scene(gameScreenComponents, SCREENCANVASWIDTH, SCREENHEIGHT),
                 intialScreenScene = new Scene(initialScreenComponents, SCREENCANVASWIDTH, SCREENHEIGHT,
                         Color.GREENYELLOW);
-       
+
         image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/SNAKE_GAME.png")));
 
         // Set icon to app
         gameScreen.getIcons().add(image);
 
+        // Set name to app
+        gameScreen.setTitle("SnakeGame®");
+
         // Set stage to a specific size
         gameScreen.setResizable(false);
         gameScreen.setWidth(800);
         gameScreen.setHeight(600);
-        gameScreen.setX(540);
-        gameScreen.setY(240);
+        gameScreen.centerOnScreen();
         gameScreen.show();
 
-        initialScreenGame(gameScreen, initialScreenComponents, gameScreenComponents, intialScreenScene, gameScreenScene);
+        initialScreenGame(gameScreen, initialScreenComponents, gameScreenComponents, intialScreenScene,
+                gameScreenScene);
 
     }
 
-    private void initialScreenGame(Stage gameScreen, Group initialScreenComponents, Group gameScreenComponents, Scene intialScreenScene,
+    private void initialScreenGame(Stage gameScreen, Group initialScreenComponents, Group gameScreenComponents,
+            Scene intialScreenScene,
             Scene gameScreenScene) {
         Font gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 43);
 
@@ -77,78 +81,72 @@ public class Main extends Application {
 
         gameScreen.setScene(intialScreenScene);
 
-        Text text1 = new Text();
-        Text text = new Text();
+        Text text1 = new Text("SNAKE"), text = new Text("GAME"), playButton = new Text("---->PLAY<----");
+        ;
 
-        text1.setText("SNAKE");
         text1.setX(300);
         text1.setY(150);
         text1.setFont(gameFont);
         text1.setFill(Color.BLACK);
 
-        text.setText("GAME");
         text.setX(315);
         text.setY(225);
         text.setFont(gameFont);
         text.setFill(Color.BLACK);
 
-        Rectangle rectangle = new Rectangle();
+        Rectangle rectangle = new Rectangle(), rectangle1 = new Rectangle(), rectangle2 = new Rectangle(),
+                rectangle3 = new Rectangle(),
+                rectangle4 = new Rectangle(), rectangle5 = new Rectangle(), rectangle6 = new Rectangle(),
+                rectangle7 = new Rectangle();
+
         rectangle.setX(0);
         rectangle.setY(570);
         rectangle.setWidth(800);
         rectangle.setHeight(30);
         rectangle.setFill(Color.WHITE);
 
-        Rectangle rectangle1 = new Rectangle();
         rectangle1.setX(310);
         rectangle1.setY(49);
         rectangle1.setWidth(250);
         rectangle1.setHeight(25);
         rectangle1.setFill(Color.LIGHTSKYBLUE);
 
-        Rectangle rectangle2 = new Rectangle();
         rectangle2.setX(535);
         rectangle2.setY(49);
         rectangle2.setWidth(25);
         rectangle2.setHeight(230);
         rectangle2.setFill(Color.LIGHTSKYBLUE);
 
-        Rectangle rectangle3 = new Rectangle();
         rectangle3.setX(215);
         rectangle3.setY(279);
         rectangle3.setWidth(345);
         rectangle3.setHeight(25);
         rectangle3.setFill(Color.LIGHTSKYBLUE);
 
-        Rectangle rectangle4 = new Rectangle();
         rectangle4.setX(215);
         rectangle4.setY(279);
         rectangle4.setWidth(25);
         rectangle4.setHeight(125);
         rectangle4.setFill(Color.LIGHTSKYBLUE);
 
-        Rectangle rectangle5 = new Rectangle();
         rectangle5.setX(215);
         rectangle5.setY(404);
         rectangle5.setWidth(300);
         rectangle5.setHeight(25);
         rectangle5.setFill(Color.LIGHTSKYBLUE);
 
-        Rectangle rectangle6 = new Rectangle();
         rectangle6.setX(509);
         rectangle6.setY(411);
         rectangle6.setWidth(10);
         rectangle6.setHeight(10);
         rectangle6.setFill(Color.BLACK);
 
-        Rectangle rectangle7 = new Rectangle();
         rectangle7.setX(570);
         rectangle7.setY(404);
         rectangle7.setWidth(25);
         rectangle7.setHeight(25);
         rectangle7.setFill(Color.BROWN);
 
-        Text playButton = new Text("---->PLAY<----");
         playButton.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 17));
         playButton.setFill(Color.BLACK);
         playButton.setStrokeWidth(1);
@@ -167,12 +165,13 @@ public class Main extends Application {
             }
         });
 
-        addScreenComponents(initialScreenComponents, instructions, rectangle, rectangle1, rectangle2, rectangle3, rectangle6, rectangle5, rectangle4, rectangle7, text, text1);
+        addScreenComponents(initialScreenComponents, instructions, rectangle, rectangle1, rectangle2, rectangle3,
+                rectangle6, rectangle5, rectangle4, rectangle7, text, text1);
 
     }
 
-    private void addScreenComponents(Group initialScreenComponents, Node... nodes){
-            initialScreenComponents.getChildren().addAll(nodes); 
+    private void addScreenComponents(Group initialScreenComponents, Node... nodes) {
+        initialScreenComponents.getChildren().addAll(nodes);
     }
 
     private void gameScreenSnake(Stage gameScreen, Group gameScreenComponents, Scene gameScreenScene) {
