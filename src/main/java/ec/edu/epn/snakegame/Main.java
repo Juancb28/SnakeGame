@@ -28,7 +28,7 @@ public class Main extends Application {
 
     // static variables
     static final Integer SNAKEBODY = 20, SCREENCANVASWIDTH = 800, SCREENHEIGHT = 600;
-    private Font font = new Font("STYLESHEET_CASPIAN", 35);
+    private Font font = new Font("Arial", 50);
 
     // Attributes
     private Image image;
@@ -43,11 +43,8 @@ public class Main extends Application {
     public void start(@SuppressWarnings("exports") Stage gameScreen) throws IOException {
 
         Group initialScreenComponents = new Group();
-        // gameScreenComponents = new Group(),
         Scene intialScreenScene = new Scene(initialScreenComponents, SCREENCANVASWIDTH, SCREENHEIGHT,
                 Color.GREENYELLOW);
-        // gameScreenScene = new Scene(gameScreenComponents, SCREENCANVASWIDTH,
-        // SCREENHEIGHT);
 
         image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/SNAKE_GAME.png")));
 
@@ -65,12 +62,6 @@ public class Main extends Application {
         gameScreen.show();
 
         initialScreenGame(gameScreen, initialScreenComponents, intialScreenScene);
-
-        /*
-         * initialScreenGame(gameScreen, initialScreenComponents, gameScreenComponents,
-         * intialScreenScene,
-         * gameScreenScene);
-         */
 
     }
 
@@ -227,7 +218,7 @@ public class Main extends Application {
         if (!running) {
             gc.setFill(Color.RED);
             gc.setFont(font);
-            gc.fillText("Game Over", SCREENCANVASWIDTH / 2 - 100 , SCREENHEIGHT / 2 - 50);
+            gc.fillText("Game Over", SCREENCANVASWIDTH / 2 - 100, SCREENHEIGHT / 2 - 50);
             return;
         }
 
@@ -264,11 +255,6 @@ public class Main extends Application {
         food[1] = rand.nextInt(22);
     }
 
-    /**
-     * todo: limits' game zone for height is 465 and width 750, only use snake with
-     * 35x35
-     */
-
     private void checkCollision() {
         int[] head = snakeWay.getFirst();
         if (head[0] < 0 || head[0] >= 41 || head[1] < 0 || head[1] >= 26) {
@@ -296,7 +282,6 @@ public class Main extends Application {
         image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/applePixel.png")));
 
         gc.drawImage(image, food[0] * SNAKEBODY, food[1] * SNAKEBODY, SNAKEBODY + 10, SNAKEBODY + 10);
-
 
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 520, 800, 80);
