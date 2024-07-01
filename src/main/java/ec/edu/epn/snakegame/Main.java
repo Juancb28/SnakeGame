@@ -251,13 +251,13 @@ public class Main extends Application {
 
     private void placeFood() {
         Random rand = new Random();
-        food[0] = rand.nextInt(22);
-        food[1] = rand.nextInt(22);
+        food[0] = rand.nextInt(22) + 2;
+        food[1] = rand.nextInt(22) + 2;
     }
 
     private void checkCollision() {
         int[] head = snakeWay.getFirst();
-        if (head[0] < 0 || head[0] >= 41 || head[1] < 0 || head[1] >= 26) {
+        if (head[0] <= 0 || head[0] >= 39 || head[1] <= 0 || head[1] >= 26) {
             running = false;
         }
         for (int i = 1; i < snakeWay.size(); i++) {
@@ -271,20 +271,31 @@ public class Main extends Application {
         gc.clearRect(0, 0, SCREENCANVASWIDTH, SCREENHEIGHT);
 
         gc.setFill(Color.GREENYELLOW);
-        gc.fillRect(0, 0, SCREENCANVASWIDTH, SCREENHEIGHT);
+        gc.fillRect(20, 0, SCREENCANVASWIDTH - 40, SCREENHEIGHT - 80);
 
         gc.setFill(Color.LIGHTSKYBLUE);
-        gc.setStroke(Color.BEIGE);
         for (int[] part : snakeWay) {
             gc.fillRect(part[0] * SNAKEBODY, part[1] * SNAKEBODY, SNAKEBODY, SNAKEBODY);
         }
 
+        gc.setFill(Color.BLACK);
+        gc.fillRect(snakeWay.get(0)[0] * SNAKEBODY, snakeWay.get(0)[1] * SNAKEBODY, SNAKEBODY, SNAKEBODY);
+
+        gc.setFill(Color.BROWN);
+        gc.fillRect(0, 0, 20, SCREENHEIGHT - 80);
+
+        gc.setFill(Color.BROWN);
+        gc.fillRect(780, 0, 20, SCREENHEIGHT - 80);
+
+        gc.setFill(Color.BROWN);
+        gc.fillRect(0, 520, SCREENCANVASWIDTH, 20);
+
         image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/applePixel.png")));
 
-        gc.drawImage(image, food[0] * SNAKEBODY, food[1] * SNAKEBODY, SNAKEBODY + 10, SNAKEBODY + 10);
+        gc.drawImage(image, food[0] * SNAKEBODY, food[1] * SNAKEBODY, SNAKEBODY, SNAKEBODY);
 
-        gc.setFill(Color.WHITE);
-        gc.fillRect(0, 520, 800, 80);
+        gc.setFill(Color.WHEAT);
+        gc.fillRect(0, 540, SCREENCANVASWIDTH, 60);
     }
 
     public static void main(String[] args) {
