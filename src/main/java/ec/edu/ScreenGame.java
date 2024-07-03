@@ -3,7 +3,6 @@ package ec.edu;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Random;
-
 import ec.edu.epn.snakegame.KeyDirections;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
