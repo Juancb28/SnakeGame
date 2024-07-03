@@ -18,6 +18,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import utils.Chronometer;
 import javafx.animation.Timeline;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -39,12 +40,15 @@ public class Main extends Application {
     private int[] food = new int[2];
     private Boolean running = true;
 
+    private Chronometer chronometer;
+
     @Override
     public void start(@SuppressWarnings("exports") Stage gameScreen) throws IOException {
 
         Group initialScreenComponents = new Group();
         Scene intialScreenScene = new Scene(initialScreenComponents, SCREENCANVASWIDTH, SCREENHEIGHT,
                 Color.GREENYELLOW);
+        chronometer = new Chronometer();
 
         image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/SNAKE_GAME.png")));
 
@@ -212,6 +216,7 @@ public class Main extends Application {
         snakeWay.clear();
         snakeWay.add(new int[] { 22 / 2, 22 / 2 });
         placeFood();
+        chronometer.initChronometer();
     }
 
     private void run(GraphicsContext gc) {
@@ -265,6 +270,9 @@ public class Main extends Application {
                 running = false;
             }
         }
+
+        if (!running)
+            chronometer.stopChronometer();
     }
 
     private void draw(GraphicsContext gc) {
@@ -296,6 +304,11 @@ public class Main extends Application {
 
         gc.setFill(Color.WHEAT);
         gc.fillRect(0, 540, SCREENCANVASWIDTH, 60);
+
+        font = new Font(35);
+        gc.setFill(Color.BLACK);
+        gc.setFont(font);
+        gc.fillText(chronometer.getChronometer(), SCREENCANVASWIDTH - 200, SCREENHEIGHT - 30);
     }
 
     public static void main(String[] args) {
