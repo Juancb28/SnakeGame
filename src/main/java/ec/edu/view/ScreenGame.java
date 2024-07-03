@@ -1,10 +1,11 @@
-package ec.edu;
+package ec.edu.view;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Random;
-import ec.edu.epn.snakegame.KeyDirections;
+
+import ec.edu.KeyDirections;
+import ec.edu.player.PlayerGame;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
@@ -36,60 +37,74 @@ public class ScreenGame {
     private Font font = new Font("Arial", 50);
     private KeyDirections direction = KeyDirections.RIGHT;
     private LinkedList<int[]> snakeWay = new LinkedList<>();
-    // private Color[] colorHeadSnake = new Color[] { Color.BLACK, Color.WHITESMOKE
-    // };
-    // private Color[] colorsBackground = new Color[] { Color.GREENYELLOW,
-    // Color.GRAY };
-    // private Color[] colorSnake = new Color[] { Color.SKYBLUE, Color.GREENYELLOW
-    // };
-
-    private Color[] colorHeadSnake = new Color[] { 
-        Color.web("#228B22"),   // Verde Bosque
-        Color.web("#32CD32"),   // Verde Lima
-        Color.web("#008000"),   // Verde
-        Color.web("#3CB371"),   // Verde Medio Mar
-        Color.web("#2E8B57"),   // Verde Marino Medio
-        Color.web("#006400"),   // Verde Oscuro
-        Color.web("#90EE90"),   // Verde Claro
-        Color.web("#00FF7F"),   // Verde Primavera
-        Color.web("#7FFF00"),   // Verde Amarillo
-        Color.web("#00FA9A")    // Verde Medio
-    };
-    
-    private Color[] colorsBackground = new Color[] { 
-        Color.web("#F0F8FF"), // Azul Alice
-        Color.web("#F5F5F5"), // Blanco Fantasma
-        Color.web("#E6E6FA"), // Lavanda
-        Color.web("#FFFAF0"), // Flor Blanca
-        Color.web("#F0FFF0"), // Verde Menta
-        Color.web("#FFF0F5"), // Rosa Lavanda
-        Color.web("#FAF0E6"), // Lino
-        Color.web("#F5FFFA"), // Menta Crema
-        Color.web("#FFF5EE"), // Melón
-        Color.web("#FFF8DC")  // Maíz Antiguo
-    };
-    
-    private Color[] colorSnake = new Color[] { 
-        Color.web("#6B8E23"),  // Verde Oliva Oscuro
-        Color.web("#556B2F"),  // Verde Oscuro
-        Color.web("#8FBC8F"),  // Verde Claro
-        Color.web("#228B22"),  // Verde Bosque
-        Color.web("#32CD32"),  // Verde Lima
-        Color.web("#008000"),  // Verde
-        Color.web("#3CB371"),  // Verde Medio Mar
-        Color.web("#2E8B57"),  // Verde Marino Medio
-        Color.web("#006400"),  // Verde Oscuro
-        Color.web("#90EE90")   // Verde Claro
-    };
-
     private int level;
     private int appleEaten;
+    private int score;
     private int aux;
+    private int pressedTimes;
+    private PlayerGame playerGame;
+
+    private Color[] colorHeadSnake = new Color[] {
+            Color.web("#228B22"), // Verde Bosque
+            Color.web("#32CD32"), // Verde Lima
+            Color.web("#008000"), // Verde
+            Color.web("#3CB371"), // Verde Medio Mar
+            Color.web("#2E8B57"), // Verde Marino Medio
+            Color.web("#006400"), // Verde Oscuro
+            Color.web("#90EE90"), // Verde Claro
+            Color.web("#00FF7F"), // Verde Primavera
+            Color.web("#7FFF00"), // Verde Amarillo
+            Color.web("#00FA9A") // Verde Medio
+    };
+
+    private Color[] colorsBackground = new Color[] {
+            Color.web("#F0F8FF"), // Azul Alice
+            Color.web("#F5F5F5"), // Blanco Fantasma
+            Color.web("#E6E6FA"), // Lavanda
+            Color.web("#FFFAF0"), // Flor Blanca
+            Color.web("#F0FFF0"), // Verde Menta
+            Color.web("#FFF0F5"), // Rosa Lavanda
+            Color.web("#FAF0E6"), // Lino
+            Color.web("#F5FFFA"), // Menta Crema
+            Color.web("#FFF5EE"), // Melón
+            Color.web("#FFF8DC") // Maíz Antiguo
+    };
+
+    private Color[] colorSnake = new Color[] {
+            Color.web("#6B8E23"), // Verde Oliva Oscuro
+            Color.web("#556B2F"), // Verde Oscuro
+            Color.web("#8FBC8F"), // Verde Claro
+            Color.web("#228B22"), // Verde Bosque
+            Color.web("#32CD32"), // Verde Lima
+            Color.web("#008000"), // Verde
+            Color.web("#3CB371"), // Verde Medio Mar
+            Color.web("#2E8B57"), // Verde Marino Medio
+            Color.web("#006400"), // Verde Oscuro
+            Color.web("#90EE90") // Verde Claro
+    };
 
     public ScreenGame() {
         setLevel(1);
         setAppleEaten(0);
         setAux(0);
+        setPressedTimes(0);
+        setScore(0);
+    }
+
+    public int getScore(){
+        return this.score;
+    }
+
+    public void setScore(int score){
+        this.score = score;
+    }
+
+    public int getPressedTimes() {
+        return this.pressedTimes;
+    }
+
+    public void setPressedTimes(int pressedTimes) {
+        this.pressedTimes = pressedTimes;
     }
 
     public int getAux() {
@@ -252,14 +267,19 @@ public class ScreenGame {
         Scene gameScreenScene = new Scene(root, SCREENCANVASWIDTH, SCREENHEIGHT);
 
         gameScreenScene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.UP && direction != KeyDirections.DOWN)
+            if (event.getCode() == KeyCode.UP && direction != KeyDirections.DOWN) {
                 direction = KeyDirections.UP;
-            else if (event.getCode() == KeyCode.DOWN && direction != KeyDirections.UP)
+                setPressedTimes(getPressedTimes() + 1);
+            } else if (event.getCode() == KeyCode.DOWN && direction != KeyDirections.UP) {
                 direction = KeyDirections.DOWN;
-            else if (event.getCode() == KeyCode.LEFT && direction != KeyDirections.RIGHT)
+                setPressedTimes(getPressedTimes() + 1);
+            } else if (event.getCode() == KeyCode.LEFT && direction != KeyDirections.RIGHT) {
                 direction = KeyDirections.LEFT;
-            else if (event.getCode() == KeyCode.RIGHT && direction != KeyDirections.LEFT)
+                setPressedTimes(getPressedTimes() + 1);
+            } else if (event.getCode() == KeyCode.RIGHT && direction != KeyDirections.LEFT) {
                 direction = KeyDirections.RIGHT;
+                setPressedTimes(getPressedTimes() + 1);
+            }
         });
 
         gameScreen.setScene(gameScreenScene);
@@ -274,6 +294,7 @@ public class ScreenGame {
         placeFood();
         chronometer = new Chronometer();
         chronometer.initChronometer();
+        playerGame = new PlayerGame(null, getScore());
     }
 
     private void run(GraphicsContext gc) {
@@ -310,10 +331,13 @@ public class ScreenGame {
             setAppleEaten(getAppleEaten() + 1);
             if (getAppleEaten() % 3 == 0) {
                 setLevel(getLevel() + 1);
-                if (getLevel() % 5 == 0) {
+                if (getLevel() % 5 == 0 && getAux() < 10) {
                     setAux(getAux() + 1);
                 }
             }
+            playerGame.calculateScore(getPressedTimes());
+            setScore(playerGame.getScore());
+            setPressedTimes(0); // Snake already ate apple, so reset value into 0
         } else {
             snakeWay.removeLast();
         }
@@ -377,7 +401,11 @@ public class ScreenGame {
 
         gc.setFill(Color.BLACK);
         gc.setFont(font);
-        gc.fillText("Nivel " + getLevel(), 10, SCREENHEIGHT - 30);
+        gc.fillText("LEVEL " + getLevel(), 10, SCREENHEIGHT - 30);
+
+        gc.setFill(Color.BLACK);
+        gc.setFont(font);
+        gc.fillText("SCORE " + getScore(), 160, SCREENHEIGHT - 30);
     }
 
 }

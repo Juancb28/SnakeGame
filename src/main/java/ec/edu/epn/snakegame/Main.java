@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 
-import ec.edu.ScreenGame;
+import ec.edu.view.ScreenGame;
 
 public class Main extends Application {
 
