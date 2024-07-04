@@ -346,7 +346,7 @@ public class ScreenGame {
                 setLevel(getLevel() + 1);
                 if (getLevel() % 5 == 0 && getAux() < 10) {
                     setAux(getAux() + 1);
-                    setSnakeVelocity(getSnakeVelocity() - 50);
+                    setSnakeVelocity(getSnakeVelocity() - 10);
                     increaseSpeed(gc, timeline, getSnakeVelocity());
                 }
             }
@@ -359,16 +359,9 @@ public class ScreenGame {
     }
 
     public void increaseSpeed(GraphicsContext gc, Timeline timeline, double newSpeedMillis) {
-        // Pausar el timeline
         timeline.stop();
-    
-        // Crear un nuevo KeyFrame con la nueva duración
         KeyFrame keyFrame = new KeyFrame(Duration.millis(newSpeedMillis), e -> run(gc, timeline));
-    
-        // Actualizar el timeline con el nuevo KeyFrame
         timeline.getKeyFrames().setAll(keyFrame);
-    
-        // Reiniciar el timeline
         timeline.play();
     }
 
