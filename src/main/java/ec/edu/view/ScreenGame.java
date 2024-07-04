@@ -8,15 +8,22 @@ import ec.edu.KeyDirections;
 import ec.edu.player.PlayerGame;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -44,8 +51,8 @@ public class ScreenGame {
     private int pressedTimes;
     private int snakeVelocity;
     private Timeline timeline;
-
-    private PlayerGame playerGame;
+    private String name;
+    private PlayerGame player;
 
     private Color[] colorHeadSnake = new Color[] {
             Color.web("#228B22"), // Verde Bosque
@@ -93,6 +100,15 @@ public class ScreenGame {
         setPressedTimes(0);
         setScore(0);
         setSnakeVelocity(200);
+        player = new PlayerGame(null, getScore());
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getSnakeVelocity() {
@@ -256,7 +272,8 @@ public class ScreenGame {
         instructions.setLayoutY(450);
         intialScreenScene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                gameScreenSnake(gameScreen);
+                // gameScreenSnake(gameScreen);
+                menu(gameScreen);
             }
         });
 
@@ -267,6 +284,188 @@ public class ScreenGame {
 
     private void addInitialScreenComponents(Group initialScreenComponents, Node... nodes) {
         initialScreenComponents.getChildren().addAll(nodes);
+    }
+
+    public void menu(Stage gameScreen) {
+        Font gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 25);
+        Group root = new Group();
+        Scene menu = new Scene(root, SCREENCANVASWIDTH, SCREENHEIGHT, Color.GREENYELLOW);
+        gameScreen.setScene(menu);
+        Rectangle rectangle = new Rectangle(), rectangle1 = new Rectangle(), rectangle2 = new Rectangle(),
+                rectangle3 = new Rectangle();
+
+        Button newGameButton = new Button(), newBestScoreButton = new Button(), newExitGameButton = new Button();
+        Text text1 = new Text("Menu");
+        text1.setX(350);
+        text1.setY(100);
+        text1.setFont(gameFont);
+        text1.setFill(Color.BLACK);
+
+        rectangle.setX(100);
+        rectangle.setY(25);
+        rectangle.setWidth(600);
+        rectangle.setHeight(30);
+        rectangle.setFill(Color.TOMATO);
+
+        rectangle1.setX(100);
+        rectangle1.setY(25);
+        rectangle1.setWidth(30);
+        rectangle1.setHeight(375);
+        rectangle1.setFill(Color.TOMATO);
+
+        rectangle2.setX(100);
+        rectangle2.setY(395);
+        rectangle2.setWidth(600);
+        rectangle2.setHeight(150);
+        rectangle2.setFill(Color.TOMATO);
+
+        rectangle3.setX(670);
+        rectangle3.setY(25);
+        rectangle3.setWidth(30);
+        rectangle3.setHeight(375);
+        rectangle3.setFill(Color.TOMATO);
+
+        font = new Font(20);
+        BackgroundFill backgroundFill = new BackgroundFill(Color.TOMATO, CornerRadii.EMPTY, Insets.EMPTY);
+        Background background = new Background(backgroundFill);
+        newGameButton.setLayoutX(250);
+        newGameButton.setLayoutY(125);
+
+        newGameButton.setMinWidth(300);
+        newGameButton.setMinHeight(40);
+        newGameButton.setFont(gameFont);
+        newGameButton.setText("New Game");
+        newGameButton.setBackground(background);
+        newGameButton.setOnAction(event -> enterName(gameScreen));
+
+        newBestScoreButton.setLayoutX(250);
+        newBestScoreButton.setLayoutY(200);
+
+        newBestScoreButton.setMinWidth(300);
+        newBestScoreButton.setMinHeight(40);
+        newBestScoreButton.setFont(gameFont);
+        newBestScoreButton.setText("Best Score");
+        newBestScoreButton.setBackground(background);
+        newBestScoreButton.setOnAction(event -> BestScore());
+
+        newExitGameButton.setLayoutX(250);
+        newExitGameButton.setLayoutY(275);
+        newExitGameButton.setMinWidth(300);
+        newExitGameButton.setMinHeight(40);
+        newExitGameButton.setFont(gameFont);
+        newExitGameButton.setText("Exit Game");
+        newExitGameButton.setBackground(background);
+        newExitGameButton.setOnAction(event -> exitGam());
+
+        image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/applePixel.png")));
+        ImageView imageMenu = new ImageView(image);
+        imageMenu.setFitHeight(75);
+        imageMenu.setFitWidth(75);
+        imageMenu.setX(280);
+        imageMenu.setY(47);
+
+        ImageView imageMenu2 = new ImageView(image);
+        imageMenu2.setFitHeight(75);
+        imageMenu2.setFitWidth(75);
+        imageMenu2.setX(440);
+        imageMenu2.setY(47);
+
+        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(1), imageMenu2);
+        translateTransition.setFromX(0); // pos inicial
+        translateTransition.setToX(25); // pos final
+        translateTransition.setFromY(0); // pos inicial y
+        translateTransition.setToY(0); // pos final u
+        translateTransition.setCycleCount(TranslateTransition.INDEFINITE); // ciclo repetivo
+        translateTransition.setAutoReverse(true);
+
+        TranslateTransition translateTransition1 = new TranslateTransition(Duration.seconds(1), imageMenu);
+        translateTransition1.setFromX(0);
+        translateTransition1.setToX(-25);
+        translateTransition1.setFromY(0);
+        translateTransition1.setToY(0);
+        translateTransition1.setCycleCount(TranslateTransition.INDEFINITE);
+        translateTransition1.setAutoReverse(true);
+
+        translateTransition.play();
+        translateTransition1.play();
+
+        root.getChildren().add(imageMenu2);
+        gameScreen.setScene(menu);
+        gameScreen.show();
+
+        root.getChildren().add(imageMenu);
+        root.getChildren().add(newGameButton);
+        root.getChildren().add(newExitGameButton);
+        root.getChildren().add(newBestScoreButton);
+        root.getChildren().add(text1);
+        addInitialScreenComponents(root, rectangle, rectangle1, rectangle2, rectangle3);
+
+        // newGameButton.setEffect(new ColorInput(75, 85, 250, 40, Color.RED));
+    }
+
+    private void exitGam() {
+        System.exit(0);
+    }
+
+    private void BestScore() {
+        System.out.println("base de datos ");
+    }
+
+    private String enterName(Stage gameScreen) {
+        Stage enterName = new Stage();
+        enterName.getIcons().add(gameScreen.getIcons().getFirst());
+        Group root = new Group();
+        Scene scene = new Scene(root, 450, 150, Color.GREENYELLOW);
+        Font gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 15);
+
+        font = new Font(5);
+        enterName.setResizable(false);
+        enterName.show();
+        enterName.setTitle("Logging");
+        enterName.setScene(scene);
+        enterName.centerOnScreen();
+
+        Text text = new Text();
+        text.setX(115);
+        text.setY(25);
+        text.setFont(gameFont);
+        text.setText("Enter your name");
+
+        TextField name = new TextField();
+        name.setPromptText("Enter your name");
+        name.setScaleX(1.8);
+        name.setLayoutX(150);
+        name.setLayoutY(40);
+        name.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                player.setNamePlayer(name.getText());
+                System.out.println("Entered Name: " + player.getNamePlayer());
+                if (!name.getText().isEmpty() && !name.getText().isBlank()) {
+                    enterName.close();
+                    gameScreenSnake(gameScreen);
+                }
+            }
+        });
+
+        Button anonymous = new Button();
+        anonymous.setLayoutX(100);
+        anonymous.setLayoutY(80);
+        anonymous.setMinWidth(150);
+        anonymous.setMinHeight(40);
+        anonymous.setFont(gameFont);
+        anonymous.setText("Play anonymous");
+        anonymous.setOnAction(event -> {
+            player.setNamePlayer("anonymous");
+            enterName.close();
+            gameScreenSnake(gameScreen);
+        });
+
+        
+        root.getChildren().add(anonymous);
+        root.getChildren().add(name);
+        root.getChildren().add(text);
+        return getName();
+
     }
 
     private void gameScreenSnake(Stage gameScreen) {
@@ -304,10 +503,11 @@ public class ScreenGame {
     private void startGame() {
         snakeWay.clear();
         snakeWay.add(new int[] { 22 / 2, 22 / 2 });
+        snakeWay.add(new int[] { 22 / 2, (22 / 2) - 1 });
         placeFood();
         chronometer = new Chronometer();
         chronometer.initChronometer();
-        playerGame = new PlayerGame(null, getScore());
+        // player = new PlayerGame(null, getScore());
     }
 
     private void run(GraphicsContext gc, Timeline timeline) {
@@ -350,8 +550,8 @@ public class ScreenGame {
                     increaseSpeed(gc, timeline, getSnakeVelocity());
                 }
             }
-            playerGame.calculateScore(getPressedTimes());
-            setScore(playerGame.getScore());
+            player.calculateScore(getPressedTimes());
+            setScore(player.getScore());
             setPressedTimes(0); // Snake already ate apple, so reset value into 0
         } else {
             snakeWay.removeLast();
@@ -427,7 +627,12 @@ public class ScreenGame {
 
         gc.setFill(Color.BLACK);
         gc.setFont(font);
-        gc.fillText("SCORE " + getScore(), 160, SCREENHEIGHT - 30);
+        gc.fillText("SCORE " + getScore(), 150, SCREENHEIGHT - 30);
+
+        gc.setFill(Color.BLACK);
+        gc.setFont(font);
+        gc.fillText("PLAYER " + player.getNamePlayer(), 340, SCREENHEIGHT - 30);
+
     }
 
 }
