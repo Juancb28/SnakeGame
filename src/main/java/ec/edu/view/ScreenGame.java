@@ -42,6 +42,9 @@ public class ScreenGame {
     private int score;
     private int aux;
     private int pressedTimes;
+    private int snakeVelocity;
+    private Timeline timeline;
+
     private PlayerGame playerGame;
 
     private Color[] colorHeadSnake = new Color[] {
@@ -89,13 +92,24 @@ public class ScreenGame {
         setAux(0);
         setPressedTimes(0);
         setScore(0);
+        setSnakeVelocity(200);
     }
 
-    public int getScore(){
+    public int getSnakeVelocity() {
+        return snakeVelocity;
+    }
+
+    public void setSnakeVelocity(int snakeVelocity) {
+        if (snakeVelocity > 0) {
+            this.snakeVelocity = snakeVelocity;
+        }
+    }
+
+    public int getScore() {
         return this.score;
     }
 
-    public void setScore(int score){
+    public void setScore(int score) {
         this.score = score;
     }
 
@@ -258,9 +272,8 @@ public class ScreenGame {
     private void gameScreenSnake(Stage gameScreen) {
         Canvas gameZone = new Canvas(SCREENCANVASWIDTH, SCREENHEIGHT);
         GraphicsContext gc = gameZone.getGraphicsContext2D();
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(200), e -> run(gc)));
+        timeline = new Timeline(new KeyFrame(Duration.millis(getSnakeVelocity()), e -> run(gc, timeline)));
         timeline.setCycleCount(Timeline.INDEFINITE);
-
         gameZone.relocate(0, 0);
 
         StackPane root = new StackPane(gameZone);
@@ -297,7 +310,7 @@ public class ScreenGame {
         playerGame = new PlayerGame(null, getScore());
     }
 
-    private void run(GraphicsContext gc) {
+    private void run(GraphicsContext gc, Timeline timeline) {
         if (!running) {
             gc.setFill(Color.RED);
             gc.setFont(font);
@@ -305,12 +318,12 @@ public class ScreenGame {
             return;
         }
 
-        moveSnake();
+        moveSnake(gc, timeline);
         checkCollision();
         draw(gc);
     }
 
-    private void moveSnake() {
+    private void moveSnake(GraphicsContext gc, Timeline timeline) {
         int[] head = snakeWay.getFirst();
         int newX = head[0];
         int newY = head[1];
@@ -333,6 +346,8 @@ public class ScreenGame {
                 setLevel(getLevel() + 1);
                 if (getLevel() % 5 == 0 && getAux() < 10) {
                     setAux(getAux() + 1);
+                    setSnakeVelocity(getSnakeVelocity() - 50);
+                    increaseSpeed(gc, timeline, getSnakeVelocity());
                 }
             }
             playerGame.calculateScore(getPressedTimes());
@@ -341,6 +356,20 @@ public class ScreenGame {
         } else {
             snakeWay.removeLast();
         }
+    }
+
+    public void increaseSpeed(GraphicsContext gc, Timeline timeline, double newSpeedMillis) {
+        // Pausar el timeline
+        timeline.stop();
+    
+        // Crear un nuevo KeyFrame con la nueva duración
+        KeyFrame keyFrame = new KeyFrame(Duration.millis(newSpeedMillis), e -> run(gc, timeline));
+    
+        // Actualizar el timeline con el nuevo KeyFrame
+        timeline.getKeyFrames().setAll(keyFrame);
+    
+        // Reiniciar el timeline
+        timeline.play();
     }
 
     private void placeFood() {

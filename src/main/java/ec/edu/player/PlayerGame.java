@@ -41,14 +41,13 @@ public class PlayerGame {
     }
 
     public void calculateScore(int getPressedTimes){
-        int auxScore = 100;
-        System.out.println(getPressedTimes);
-        if (getPressedTimes < 2) {
+        int auxScore = 50;
+        if (getPressedTimes <= 2) {
             setScore(getScore() + auxScore);
         } else {
             for (int i = 0; i < getPressedTimes; i++) {
                 if (auxScore > 2) {
-                    auxScore -= 7;
+                    auxScore -= 3;
                 }
             }
             setScore(getScore() + auxScore);
