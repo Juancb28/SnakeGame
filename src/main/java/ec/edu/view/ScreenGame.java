@@ -1,9 +1,11 @@
-package ec.edu;
+package ec.edu.view;
 
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Random;
-import ec.edu.epn.snakegame.KeyDirections;
+
+import ec.edu.KeyDirections;
+import ec.edu.player.PlayerGame;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
@@ -35,16 +37,121 @@ public class ScreenGame {
     private Font font = new Font("Arial", 50);
     private KeyDirections direction = KeyDirections.RIGHT;
     private LinkedList<int[]> snakeWay = new LinkedList<>();
+    private int level;
+    private int appleEaten;
+    private int score;
+    private int aux;
+    private int pressedTimes;
+    private int snakeVelocity;
+    private Timeline timeline;
 
-    public int getScreenCanvasWidth(){
+    private PlayerGame playerGame;
+
+    private Color[] colorHeadSnake = new Color[] {
+            Color.web("#228B22"), // Verde Bosque
+            Color.web("#32CD32"), // Verde Lima
+            Color.web("#008000"), // Verde
+            Color.web("#3CB371"), // Verde Medio Mar
+            Color.web("#2E8B57"), // Verde Marino Medio
+            Color.web("#006400"), // Verde Oscuro
+            Color.web("#90EE90"), // Verde Claro
+            Color.web("#00FF7F"), // Verde Primavera
+            Color.web("#7FFF00"), // Verde Amarillo
+            Color.web("#00FA9A") // Verde Medio
+    };
+
+    private Color[] colorsBackground = new Color[] {
+            Color.web("#F0F8FF"), // Azul Alice
+            Color.web("#F5F5F5"), // Blanco Fantasma
+            Color.web("#E6E6FA"), // Lavanda
+            Color.web("#FFFAF0"), // Flor Blanca
+            Color.web("#F0FFF0"), // Verde Menta
+            Color.web("#FFF0F5"), // Rosa Lavanda
+            Color.web("#FAF0E6"), // Lino
+            Color.web("#F5FFFA"), // Menta Crema
+            Color.web("#FFF5EE"), // Melón
+            Color.web("#FFF8DC") // Maíz Antiguo
+    };
+
+    private Color[] colorSnake = new Color[] {
+            Color.web("#6B8E23"), // Verde Oliva Oscuro
+            Color.web("#556B2F"), // Verde Oscuro
+            Color.web("#8FBC8F"), // Verde Claro
+            Color.web("#228B22"), // Verde Bosque
+            Color.web("#32CD32"), // Verde Lima
+            Color.web("#008000"), // Verde
+            Color.web("#3CB371"), // Verde Medio Mar
+            Color.web("#2E8B57"), // Verde Marino Medio
+            Color.web("#006400"), // Verde Oscuro
+            Color.web("#90EE90") // Verde Claro
+    };
+
+    public ScreenGame() {
+        setLevel(1);
+        setAppleEaten(0);
+        setAux(0);
+        setPressedTimes(0);
+        setScore(0);
+        setSnakeVelocity(200);
+    }
+
+    public int getSnakeVelocity() {
+        return snakeVelocity;
+    }
+
+    public void setSnakeVelocity(int snakeVelocity) {
+        if (snakeVelocity > 0) {
+            this.snakeVelocity = snakeVelocity;
+        }
+    }
+
+    public int getScore() {
+        return this.score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getPressedTimes() {
+        return this.pressedTimes;
+    }
+
+    public void setPressedTimes(int pressedTimes) {
+        this.pressedTimes = pressedTimes;
+    }
+
+    public int getAux() {
+        return this.aux;
+    }
+
+    public void setAux(int aux) {
+        this.aux = aux;
+    }
+
+    public int getAppleEaten() {
+        return this.appleEaten;
+    }
+
+    public void setAppleEaten(int appleEaten) {
+        this.appleEaten = appleEaten;
+    }
+
+    public int getLevel() {
+        return this.level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getScreenCanvasWidth() {
         return SCREENCANVASWIDTH;
     }
 
-    public int getScreenHeight(){
+    public int getScreenHeight() {
         return SCREENHEIGHT;
     }
-
-
 
     public void initialScreenGame(Stage gameScreen, Group initialScreenComponents,
             Scene intialScreenScene) {
@@ -165,23 +272,27 @@ public class ScreenGame {
     private void gameScreenSnake(Stage gameScreen) {
         Canvas gameZone = new Canvas(SCREENCANVASWIDTH, SCREENHEIGHT);
         GraphicsContext gc = gameZone.getGraphicsContext2D();
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(200), e -> run(gc)));
+        timeline = new Timeline(new KeyFrame(Duration.millis(getSnakeVelocity()), e -> run(gc, timeline)));
         timeline.setCycleCount(Timeline.INDEFINITE);
-
         gameZone.relocate(0, 0);
 
         StackPane root = new StackPane(gameZone);
         Scene gameScreenScene = new Scene(root, SCREENCANVASWIDTH, SCREENHEIGHT);
 
         gameScreenScene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.UP && direction != KeyDirections.DOWN)
+            if (event.getCode() == KeyCode.UP && direction != KeyDirections.DOWN) {
                 direction = KeyDirections.UP;
-            else if (event.getCode() == KeyCode.DOWN && direction != KeyDirections.UP)
+                setPressedTimes(getPressedTimes() + 1);
+            } else if (event.getCode() == KeyCode.DOWN && direction != KeyDirections.UP) {
                 direction = KeyDirections.DOWN;
-            else if (event.getCode() == KeyCode.LEFT && direction != KeyDirections.RIGHT)
+                setPressedTimes(getPressedTimes() + 1);
+            } else if (event.getCode() == KeyCode.LEFT && direction != KeyDirections.RIGHT) {
                 direction = KeyDirections.LEFT;
-            else if (event.getCode() == KeyCode.RIGHT && direction != KeyDirections.LEFT)
+                setPressedTimes(getPressedTimes() + 1);
+            } else if (event.getCode() == KeyCode.RIGHT && direction != KeyDirections.LEFT) {
                 direction = KeyDirections.RIGHT;
+                setPressedTimes(getPressedTimes() + 1);
+            }
         });
 
         gameScreen.setScene(gameScreenScene);
@@ -196,9 +307,10 @@ public class ScreenGame {
         placeFood();
         chronometer = new Chronometer();
         chronometer.initChronometer();
+        playerGame = new PlayerGame(null, getScore());
     }
 
-    private void run(GraphicsContext gc) {
+    private void run(GraphicsContext gc, Timeline timeline) {
         if (!running) {
             gc.setFill(Color.RED);
             gc.setFont(font);
@@ -206,12 +318,12 @@ public class ScreenGame {
             return;
         }
 
-        moveSnake();
+        moveSnake(gc, timeline);
         checkCollision();
         draw(gc);
     }
 
-    private void moveSnake() {
+    private void moveSnake(GraphicsContext gc, Timeline timeline) {
         int[] head = snakeWay.getFirst();
         int newX = head[0];
         int newY = head[1];
@@ -228,9 +340,29 @@ public class ScreenGame {
 
         if (newHead[0] == food[0] && newHead[1] == food[1]) {
             placeFood();
+            // todo: Al comer
+            setAppleEaten(getAppleEaten() + 1);
+            if (getAppleEaten() % 3 == 0) {
+                setLevel(getLevel() + 1);
+                if (getLevel() % 5 == 0 && getAux() < 10) {
+                    setAux(getAux() + 1);
+                    setSnakeVelocity(getSnakeVelocity() - 10);
+                    increaseSpeed(gc, timeline, getSnakeVelocity());
+                }
+            }
+            playerGame.calculateScore(getPressedTimes());
+            setScore(playerGame.getScore());
+            setPressedTimes(0); // Snake already ate apple, so reset value into 0
         } else {
             snakeWay.removeLast();
         }
+    }
+
+    public void increaseSpeed(GraphicsContext gc, Timeline timeline, double newSpeedMillis) {
+        timeline.stop();
+        KeyFrame keyFrame = new KeyFrame(Duration.millis(newSpeedMillis), e -> run(gc, timeline));
+        timeline.getKeyFrames().setAll(keyFrame);
+        timeline.play();
     }
 
     private void placeFood() {
@@ -257,15 +389,15 @@ public class ScreenGame {
     private void draw(GraphicsContext gc) {
         gc.clearRect(0, 0, SCREENCANVASWIDTH, SCREENHEIGHT);
 
-        gc.setFill(Color.GREENYELLOW);
+        gc.setFill(colorsBackground[getAux()]);
         gc.fillRect(20, 0, SCREENCANVASWIDTH - 40, SCREENHEIGHT - 80);
 
-        gc.setFill(Color.LIGHTSKYBLUE);
+        gc.setFill(colorSnake[getAux()]);
         for (int[] part : snakeWay) {
             gc.fillRect(part[0] * SNAKEBODY, part[1] * SNAKEBODY, SNAKEBODY, SNAKEBODY);
         }
 
-        gc.setFill(Color.BLACK);
+        gc.setFill(colorHeadSnake[getAux()]);
         gc.fillRect(snakeWay.get(0)[0] * SNAKEBODY, snakeWay.get(0)[1] * SNAKEBODY, SNAKEBODY, SNAKEBODY);
 
         gc.setFill(Color.BROWN);
@@ -288,6 +420,14 @@ public class ScreenGame {
         gc.setFill(Color.BLACK);
         gc.setFont(font);
         gc.fillText(chronometer.getChronometer(), SCREENCANVASWIDTH - 200, SCREENHEIGHT - 30);
+
+        gc.setFill(Color.BLACK);
+        gc.setFont(font);
+        gc.fillText("LEVEL " + getLevel(), 10, SCREENHEIGHT - 30);
+
+        gc.setFill(Color.BLACK);
+        gc.setFont(font);
+        gc.fillText("SCORE " + getScore(), 160, SCREENHEIGHT - 30);
     }
 
 }
