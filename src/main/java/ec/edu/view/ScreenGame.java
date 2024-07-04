@@ -52,7 +52,7 @@ public class ScreenGame {
     private int snakeVelocity;
     private Timeline timeline;
     private String name;
-    private PlayerGame playerGame;
+    private PlayerGame player;
 
     private Color[] colorHeadSnake = new Color[] {
             Color.web("#228B22"), // Verde Bosque
@@ -100,6 +100,7 @@ public class ScreenGame {
         setPressedTimes(0);
         setScore(0);
         setSnakeVelocity(200);
+        player = new PlayerGame(null, getScore());
     }
 
     public String getName() {
@@ -109,7 +110,7 @@ public class ScreenGame {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public int getSnakeVelocity() {
         return snakeVelocity;
     }
@@ -412,13 +413,15 @@ public class ScreenGame {
 
     private String enterName(Stage gameScreen) {
         Stage enterName = new Stage();
+        enterName.getIcons().add(gameScreen.getIcons().getFirst());
         Group root = new Group();
         Scene scene = new Scene(root, 450, 150, Color.GREENYELLOW);
         Font gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 15);
 
         font = new Font(5);
+        enterName.setResizable(false);
         enterName.show();
-        enterName.setTitle("Enter your name");
+        enterName.setTitle("Logging");
         enterName.setScene(scene);
         enterName.centerOnScreen();
 
@@ -428,15 +431,6 @@ public class ScreenGame {
         text.setFont(gameFont);
         text.setText("Enter your name");
 
-        Button anonymous = new Button();
-        anonymous.setLayoutX(100);
-        anonymous.setLayoutY(80);
-        anonymous.setMinWidth(150);
-        anonymous.setMinHeight(40);
-        anonymous.setFont(gameFont);
-        anonymous.setText("Play anonymous");
-        anonymous.setOnAction(event -> enterName.close());
-
         TextField name = new TextField();
         name.setPromptText("Enter your name");
         name.setScaleX(1.8);
@@ -444,12 +438,29 @@ public class ScreenGame {
         name.setLayoutY(40);
         name.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                setName(name.getText());
-                System.out.println("Entered Name: " + getName());
-                enterName.close();
-                gameScreenSnake(gameScreen);
+                player.setNamePlayer(name.getText());
+                System.out.println("Entered Name: " + player.getNamePlayer());
+                if (!name.getText().isEmpty() && !name.getText().isBlank()) {
+                    enterName.close();
+                    gameScreenSnake(gameScreen);
+                }
             }
         });
+
+        Button anonymous = new Button();
+        anonymous.setLayoutX(100);
+        anonymous.setLayoutY(80);
+        anonymous.setMinWidth(150);
+        anonymous.setMinHeight(40);
+        anonymous.setFont(gameFont);
+        anonymous.setText("Play anonymous");
+        anonymous.setOnAction(event -> {
+            player.setNamePlayer("anonymous");
+            enterName.close();
+            gameScreenSnake(gameScreen);
+        });
+
+        
         root.getChildren().add(anonymous);
         root.getChildren().add(name);
         root.getChildren().add(text);
@@ -496,7 +507,7 @@ public class ScreenGame {
         placeFood();
         chronometer = new Chronometer();
         chronometer.initChronometer();
-        playerGame = new PlayerGame(null, getScore());
+        // player = new PlayerGame(null, getScore());
     }
 
     private void run(GraphicsContext gc, Timeline timeline) {
@@ -539,8 +550,8 @@ public class ScreenGame {
                     increaseSpeed(gc, timeline, getSnakeVelocity());
                 }
             }
-            playerGame.calculateScore(getPressedTimes());
-            setScore(playerGame.getScore());
+            player.calculateScore(getPressedTimes());
+            setScore(player.getScore());
             setPressedTimes(0); // Snake already ate apple, so reset value into 0
         } else {
             snakeWay.removeLast();
@@ -616,7 +627,12 @@ public class ScreenGame {
 
         gc.setFill(Color.BLACK);
         gc.setFont(font);
-        gc.fillText("SCORE " + getScore(), 190, SCREENHEIGHT - 30);
+        gc.fillText("SCORE " + getScore(), 150, SCREENHEIGHT - 30);
+
+        gc.setFill(Color.BLACK);
+        gc.setFont(font);
+        gc.fillText("PLAYER " + player.getNamePlayer(), 340, SCREENHEIGHT - 30);
+
     }
 
 }
