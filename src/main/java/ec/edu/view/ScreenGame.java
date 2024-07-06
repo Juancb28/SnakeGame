@@ -53,6 +53,7 @@ public class ScreenGame {
     private Timeline timeline;
     private String name;
     private PlayerGame player;
+    
     private Apple apple = new Apple();;
 
     private Color[] colorHeadSnake = new Color[] {
@@ -358,8 +359,8 @@ public class ScreenGame {
         newExitGameButton.setBackground(background);
         newExitGameButton.setOnAction(event -> exitGam());
 
-        ImageView imageMenu = new ImageView(new Image(apple.showFruit())),
-                imageMenu2 = new ImageView(new Image(apple.showFruit()));
+        ImageView imageMenu = new ImageView(new Image(apple.getPathImage())),
+                imageMenu2 = new ImageView(new Image(apple.getPathImage()));
         imageMenu.setFitHeight(75);
         imageMenu.setFitWidth(75);
         imageMenu.setX(280);
@@ -370,7 +371,8 @@ public class ScreenGame {
         imageMenu2.setX(440);
         imageMenu2.setY(47);
 
-        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(1), imageMenu2);
+        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(1), imageMenu2),
+                translateTransition1 = new TranslateTransition(Duration.seconds(1), imageMenu);
         translateTransition.setFromX(0); // pos inicial
         translateTransition.setToX(25); // pos final
         translateTransition.setFromY(0); // pos inicial y
@@ -378,7 +380,6 @@ public class ScreenGame {
         translateTransition.setCycleCount(TranslateTransition.INDEFINITE); // ciclo repetivo
         translateTransition.setAutoReverse(true);
 
-        TranslateTransition translateTransition1 = new TranslateTransition(Duration.seconds(1), imageMenu);
         translateTransition1.setFromX(0);
         translateTransition1.setToX(-25);
         translateTransition1.setFromY(0);
@@ -584,7 +585,7 @@ public class ScreenGame {
         gc.setFill(colorsBackground[getAux()]);
         gc.fillRect(20, 0, SCREENCANVASWIDTH - 40, SCREENHEIGHT - 80);
 
-        gc.drawImage(new Image(apple.showFruit()), apple.getFood()[0] * SNAKEBODY, apple.getFood()[1] * SNAKEBODY,
+        gc.drawImage(new Image(apple.getPathImage()), apple.getFood()[0] * SNAKEBODY, apple.getFood()[1] * SNAKEBODY,
                 SNAKEBODY + 7, SNAKEBODY + 7);
 
         gc.setFill(colorSnake[getAux()]);
