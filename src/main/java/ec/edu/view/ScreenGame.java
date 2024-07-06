@@ -2,9 +2,9 @@ package ec.edu.view;
 
 import java.util.LinkedList;
 import java.util.Objects;
-import java.util.Random;
-
+// import java.util.Random;
 import ec.edu.KeyDirections;
+import ec.edu.edibleitems.classes.Apple;
 import ec.edu.player.PlayerGame;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -35,7 +35,7 @@ import utils.Chronometer;
 
 public class ScreenGame {
 
-    private int[] food = new int[2];
+    // private int[] food = new int[2];
     private Chronometer chronometer;
     private Boolean running = true;
     private Image image;
@@ -53,6 +53,7 @@ public class ScreenGame {
     private Timeline timeline;
     private String name;
     private PlayerGame player;
+    private Apple apple = new Apple();;
 
     private Color[] colorHeadSnake = new Color[] {
             Color.web("#228B22"), // Verde Bosque
@@ -357,14 +358,13 @@ public class ScreenGame {
         newExitGameButton.setBackground(background);
         newExitGameButton.setOnAction(event -> exitGam());
 
-        image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/applePixel.png")));
-        ImageView imageMenu = new ImageView(image);
+        ImageView imageMenu = new ImageView(new Image(apple.showFruit())),
+                imageMenu2 = new ImageView(new Image(apple.showFruit()));
         imageMenu.setFitHeight(75);
         imageMenu.setFitWidth(75);
         imageMenu.setX(280);
         imageMenu.setY(47);
 
-        ImageView imageMenu2 = new ImageView(image);
         imageMenu2.setFitHeight(75);
         imageMenu2.setFitWidth(75);
         imageMenu2.setX(440);
@@ -460,7 +460,6 @@ public class ScreenGame {
             gameScreenSnake(gameScreen);
         });
 
-        
         root.getChildren().add(anonymous);
         root.getChildren().add(name);
         root.getChildren().add(text);
@@ -504,10 +503,9 @@ public class ScreenGame {
         snakeWay.clear();
         snakeWay.add(new int[] { 22 / 2, 22 / 2 });
         snakeWay.add(new int[] { 22 / 2, (22 / 2) - 1 });
-        placeFood();
+        apple.placeFood();
         chronometer = new Chronometer();
         chronometer.initChronometer();
-        // player = new PlayerGame(null, getScore());
     }
 
     private void run(GraphicsContext gc, Timeline timeline) {
@@ -538,8 +536,8 @@ public class ScreenGame {
         int[] newHead = { newX, newY };
         snakeWay.addFirst(newHead);
 
-        if (newHead[0] == food[0] && newHead[1] == food[1]) {
-            placeFood();
+        if (newHead[0] == apple.getFood()[0] && newHead[1] == apple.getFood()[1]) {
+            apple.placeFood();
             // todo: Al comer
             setAppleEaten(getAppleEaten() + 1);
             if (getAppleEaten() % 3 == 0) {
@@ -565,12 +563,6 @@ public class ScreenGame {
         timeline.play();
     }
 
-    private void placeFood() {
-        Random rand = new Random();
-        food[0] = rand.nextInt(22) + 2;
-        food[1] = rand.nextInt(22) + 2;
-    }
-
     private void checkCollision() {
         int[] head = snakeWay.getFirst();
         if (head[0] <= 0 || head[0] >= 39 || head[1] <= 0 || head[1] >= 26) {
@@ -592,6 +584,9 @@ public class ScreenGame {
         gc.setFill(colorsBackground[getAux()]);
         gc.fillRect(20, 0, SCREENCANVASWIDTH - 40, SCREENHEIGHT - 80);
 
+        gc.drawImage(new Image(apple.showFruit()), apple.getFood()[0] * SNAKEBODY, apple.getFood()[1] * SNAKEBODY,
+                SNAKEBODY + 7, SNAKEBODY + 7);
+
         gc.setFill(colorSnake[getAux()]);
         for (int[] part : snakeWay) {
             gc.fillRect(part[0] * SNAKEBODY, part[1] * SNAKEBODY, SNAKEBODY, SNAKEBODY);
@@ -609,10 +604,6 @@ public class ScreenGame {
         gc.setFill(Color.BROWN);
         gc.fillRect(0, 520, SCREENCANVASWIDTH, 20);
 
-        image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/applePixel.png")));
-
-        gc.drawImage(image, food[0] * SNAKEBODY, food[1] * SNAKEBODY, SNAKEBODY, SNAKEBODY);
-
         gc.setFill(Color.WHEAT);
         gc.fillRect(0, 540, SCREENCANVASWIDTH, 60);
 
@@ -627,7 +618,7 @@ public class ScreenGame {
 
         gc.setFill(Color.BLACK);
         gc.setFont(font);
-        gc.fillText("SCORE " + getScore(), 150, SCREENHEIGHT - 30);
+        gc.fillText("SCORE " + player.getScore(), 150, SCREENHEIGHT - 30);
 
         gc.setFill(Color.BLACK);
         gc.setFont(font);
