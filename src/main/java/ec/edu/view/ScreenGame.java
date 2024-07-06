@@ -25,6 +25,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -53,6 +54,7 @@ public class ScreenGame {
     private Timeline timeline;
     private String name;
     private PlayerGame player;
+    
 
     private Color[] colorHeadSnake = new Color[] {
             Color.web("#228B22"), // Verde Bosque
@@ -510,10 +512,13 @@ public class ScreenGame {
         // player = new PlayerGame(null, getScore());
     }
 
-    private void run(GraphicsContext gc, Timeline timeline) {
+    private void run(GraphicsContext gc, Timeline timeline ) {
+        Font gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 30);
+
+        font = new Font(5);
         if (!running) {
             gc.setFill(Color.RED);
-            gc.setFont(font);
+            gc.setFont(gameFont);
             gc.fillText("Game Over", SCREENCANVASWIDTH / 2 - 100, SCREENHEIGHT / 2 - 50);
             return;
         }
@@ -610,27 +615,28 @@ public class ScreenGame {
         gc.fillRect(0, 520, SCREENCANVASWIDTH, 20);
 
         image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/applePixel.png")));
+        Font gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 13);
 
         gc.drawImage(image, food[0] * SNAKEBODY, food[1] * SNAKEBODY, SNAKEBODY, SNAKEBODY);
 
         gc.setFill(Color.WHEAT);
         gc.fillRect(0, 540, SCREENCANVASWIDTH, 60);
 
-        font = new Font(35);
+        
         gc.setFill(Color.BLACK);
-        gc.setFont(font);
+        gc.setFont(gameFont);
         gc.fillText(chronometer.getChronometer(), SCREENCANVASWIDTH - 200, SCREENHEIGHT - 30);
 
         gc.setFill(Color.BLACK);
-        gc.setFont(font);
+        gc.setFont(gameFont);
         gc.fillText("LEVEL " + getLevel(), 10, SCREENHEIGHT - 30);
 
         gc.setFill(Color.BLACK);
-        gc.setFont(font);
+        gc.setFont(gameFont);
         gc.fillText("SCORE " + getScore(), 150, SCREENHEIGHT - 30);
 
         gc.setFill(Color.BLACK);
-        gc.setFont(font);
+        gc.setFont(gameFont);
         gc.fillText("PLAYER " + player.getNamePlayer(), 340, SCREENHEIGHT - 30);
 
     }
