@@ -513,7 +513,7 @@ public class ScreenGame {
     }
 
     private void run(GraphicsContext gc, Timeline timeline ) {
-        Font gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 30);
+        Font gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 3);
 
         font = new Font(5);
         if (!running) {
