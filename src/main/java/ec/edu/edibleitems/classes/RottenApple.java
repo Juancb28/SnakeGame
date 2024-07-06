@@ -5,21 +5,19 @@ import java.util.Objects;
 
 import ec.edu.edibleitems.abstractClasses.Fruit;
 
-public class Banana extends Fruit {
+public class RottenApple extends Fruit {
 
-    public Banana() {
-
+    public RottenApple(){
+        positions.add(getFood());
     }
 
     @Override
     public InputStream getPathImage() {
-        return Objects.requireNonNull(getClass().getResourceAsStream("/images/banana.png"));
+        return Objects.requireNonNull(getClass().getResourceAsStream("/images/rottenApple.png"));
     }
 
     @Override
     public void generateFruit() {
-        if (getLevelGame() > 10) {
-            
-        }
+            positions.add(getFood());
     }
 }

@@ -9,11 +9,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 
-import ec.edu.view.ScreenGame;
+import ec.edu.view.ScreenGameView;
 
 public class Main extends Application {
 
-    ScreenGame sg = new ScreenGame();
+    ScreenGameView sg = new ScreenGameView();
     private Image image;
 
     @Override

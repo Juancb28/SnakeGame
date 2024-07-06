@@ -8,11 +8,12 @@ import ec.edu.edibleitems.abstractClasses.Fruit;
 public class Apple extends Fruit {
 
     public Apple() {
-
+        positions.add(placeFood());
     }
 
     @Override
     public InputStream getPathImage() {
         return Objects.requireNonNull(getClass().getResourceAsStream("/images/applePixel.png"));
     }
+
 }

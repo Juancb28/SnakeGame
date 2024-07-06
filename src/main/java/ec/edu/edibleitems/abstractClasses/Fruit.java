@@ -1,24 +1,33 @@
 package ec.edu.edibleitems.abstractClasses;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
 public abstract class Fruit {
 
+    // Attributes
     private int[] food = new int[2];
+    private int quantity;
+    public ArrayList<int[]> positions = new ArrayList<>();
+    private int levelGame;
 
-    public int getPosition() {
-        return 0;
-    }
-
+    // Getters & Setters
     public int getQuantity() {
-        return 0;
+        return this.quantity;
     }
 
-    public void placeFood() {
-        food[0] = new Random().nextInt(22) + 2;
-        food[1] = new Random().nextInt(22) + 2;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public ArrayList<int[]> getPositions() {
+        return positions;
+    }
+
+    public void setPositions(ArrayList<int[]> positions) {
+        this.positions = positions;
     }
 
     public int[] getFood() {
@@ -29,9 +38,28 @@ public abstract class Fruit {
         this.food = food;
     }
 
+    public int getLevelGame() {
+        return this.levelGame;
+    }
+
+    public void setLevelGame(int levelGame) {
+        this.levelGame = levelGame;
+    }
+
+    // Methods
+    public int[] placeFood() {
+        Random random = new Random();
+        food[0] = random.nextInt(22) + 2;
+        food[1] = random.nextInt(22) + 2;
+        return food;
+    }
+
     public InputStream getPathImage() {
         return Objects.requireNonNull(getClass().getResourceAsStream(""));
     }
 
+    public void generateFruit() {
+        positions.add(placeFood());
+    }
 
 }
