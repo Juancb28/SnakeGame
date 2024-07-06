@@ -3,7 +3,7 @@ package ec.edu.edibleitems.classes;
 import java.io.InputStream;
 import java.util.Objects;
 
-import ec.edu.edibleitems.interfaces.Fruit;
+import ec.edu.edibleitems.abstractClasses.Fruit;
 
 public class Apple extends Fruit {
 

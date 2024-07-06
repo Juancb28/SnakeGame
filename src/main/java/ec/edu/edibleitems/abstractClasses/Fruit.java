@@ -1,4 +1,4 @@
-package ec.edu.edibleitems.interfaces;
+package ec.edu.edibleitems.abstractClasses;
 
 import java.io.InputStream;
 import java.util.Objects;

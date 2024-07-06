@@ -509,11 +509,13 @@ public class ScreenGame {
         chronometer.initChronometer();
     }
 
-    private void run(GraphicsContext gc, Timeline timeline) {
+    private void run(GraphicsContext gc, Timeline timeline ) {
+        Font gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 33);
+
         if (!running) {
             gc.setFill(Color.RED);
-            gc.setFont(font);
-            gc.fillText("Game Over", SCREENCANVASWIDTH / 2 - 100, SCREENHEIGHT / 2 - 50);
+            gc.setFont(gameFont);
+            gc.fillText("Game Over", SCREENCANVASWIDTH / 2 - 140, SCREENHEIGHT / 2 - 50);
             return;
         }
 
@@ -580,6 +582,7 @@ public class ScreenGame {
     }
 
     private void draw(GraphicsContext gc) {
+        Font gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 13);
         gc.clearRect(0, 0, SCREENCANVASWIDTH, SCREENHEIGHT);
 
         gc.setFill(colorsBackground[getAux()]);
@@ -610,19 +613,19 @@ public class ScreenGame {
 
         font = new Font(35);
         gc.setFill(Color.BLACK);
-        gc.setFont(font);
-        gc.fillText(chronometer.getChronometer(), SCREENCANVASWIDTH - 200, SCREENHEIGHT - 30);
+        gc.setFont(gameFont);
+        gc.fillText(chronometer.getChronometer(), SCREENCANVASWIDTH - 180, SCREENHEIGHT - 30);
 
         gc.setFill(Color.BLACK);
-        gc.setFont(font);
+        gc.setFont(gameFont);
         gc.fillText("LEVEL " + getLevel(), 10, SCREENHEIGHT - 30);
 
         gc.setFill(Color.BLACK);
-        gc.setFont(font);
+        gc.setFont(gameFont);
         gc.fillText("SCORE " + player.getScore(), 150, SCREENHEIGHT - 30);
 
         gc.setFill(Color.BLACK);
-        gc.setFont(font);
+        gc.setFont(gameFont);
         gc.fillText("PLAYER " + player.getNamePlayer(), 340, SCREENHEIGHT - 30);
 
     }
