@@ -507,7 +507,6 @@ public class ScreenGameView {
         snakeWay.clear();
         snakeWay.add(new int[] { 22 / 2, 22 / 2 });
         snakeWay.add(new int[] { 22 / 2, (22 / 2) - 1 });
-        // apple.placeFood();
         chronometer = new Chronometer();
         chronometer.initChronometer();
     }
@@ -543,12 +542,16 @@ public class ScreenGameView {
         snakeWay.addFirst(newHead);
 
         if (newHead[0] == apple.getFood()[0] && newHead[1] == apple.getFood()[1]) {
+
             apple.getPositions().clear();
             apple.generateFruit();
+            rottenApple.generateFruit();
+
             setAppleEaten(getAppleEaten() + 1);
             if (getAppleEaten() % 3 == 0) {
+                // Modify level and update levels from apple, rottenApple and banana classes
                 setLevel(getLevel() + 1);
-                apple.setLevelGame(getLevel());
+                setNewLevelToClasses();
                 if (getLevel() % 5 == 0 && getAux() < 10) {
                     setAux(getAux() + 1);
                     setSnakeVelocity(getSnakeVelocity() - 10);
@@ -558,14 +561,30 @@ public class ScreenGameView {
             player.calculateScore(getPressedTimes());
             setScore(player.getScore());
             setPressedTimes(0); // Snake already ate apple, so reset value into 0
-        } else if (getLevel() >= 10) {
-            rottenApple.generateFruit();
+        } else if (getLevel() >= 5) {
             if (newHead[0] == rottenApple.getFood()[0] && newHead[1] == rottenApple.getFood()[1]) {
-                
-            }
+                rottenApple.getPositions().clear();
+                rottenApple.generateFruit();
+                System.out.println("Before: " + getAux());
+                if (getLevel() % 5 == 0) {
+                    setAux(getAux() - 1);
+                }
+                System.out.println("After: " + getAux());
+                setLevel(getLevel() - 1);
+                setNewLevelToClasses();
+                snakeWay.removeLast();
+                snakeWay.removeLast();
+                setAppleEaten(getAppleEaten() - 1);
+            } else
+                snakeWay.removeLast();
         } else {
             snakeWay.removeLast();
         }
+    }
+
+    private void setNewLevelToClasses() {
+        apple.setLevelGame(getLevel());
+        rottenApple.setLevelGame(getLevel());
     }
 
     public void increaseSpeed(GraphicsContext gc, Timeline timeline, double newSpeedMillis) {
@@ -600,6 +619,12 @@ public class ScreenGameView {
         gc.drawImage(new Image(apple.getPathImage()), apple.getPositions().get(0)[0] * SNAKEBODY,
                 apple.getPositions().get(0)[1] * SNAKEBODY,
                 SNAKEBODY + 7, SNAKEBODY + 7);
+
+        if (getLevel() >= 5) {
+            gc.drawImage(new Image(rottenApple.getPathImage()), rottenApple.getPositions().get(0)[0] * SNAKEBODY,
+                    rottenApple.getPositions().get(0)[1] * SNAKEBODY,
+                    SNAKEBODY + 7, SNAKEBODY + 7);
+        }
 
         gc.setFill(colorSnake[getAux()]);
         for (int[] part : snakeWay) {

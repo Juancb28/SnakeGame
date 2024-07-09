@@ -48,9 +48,8 @@ public abstract class Fruit {
 
     // Methods
     public int[] placeFood() {
-        Random random = new Random();
-        food[0] = random.nextInt(22) + 2;
-        food[1] = random.nextInt(22) + 2;
+        food[0] = new Random().nextInt(22) + 2;
+        food[1] = new Random().nextInt(22) + 2;
         return food;
     }
 

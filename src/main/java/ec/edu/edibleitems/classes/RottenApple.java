@@ -8,7 +8,7 @@ import ec.edu.edibleitems.abstractClasses.Fruit;
 public class RottenApple extends Fruit {
 
     public RottenApple(){
-        positions.add(getFood());
+        positions.add(placeFood());
     }
 
     @Override
@@ -18,6 +18,9 @@ public class RottenApple extends Fruit {
 
     @Override
     public void generateFruit() {
-            positions.add(getFood());
+        if (getLevelGame() >= 5) {
+            super.generateFruit();
+        }
     }
+
 }
