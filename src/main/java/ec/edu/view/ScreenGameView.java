@@ -565,11 +565,9 @@ public class ScreenGameView {
             if (newHead[0] == rottenApple.getFood()[0] && newHead[1] == rottenApple.getFood()[1]) {
                 rottenApple.getPositions().clear();
                 rottenApple.generateFruit();
-                System.out.println("Before: " + getAux());
                 if (getLevel() % 5 == 0) {
                     setAux(getAux() - 1);
                 }
-                System.out.println("After: " + getAux());
                 setLevel(getLevel() - 1);
                 setNewLevelToClasses();
                 snakeWay.removeLast();
