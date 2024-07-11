@@ -2,9 +2,9 @@ package ec.edu.view;
 
 import java.util.LinkedList;
 import java.util.Objects;
-import java.util.Random;
-
 import ec.edu.KeyDirections;
+import ec.edu.edibleitems.classes.Apple;
+import ec.edu.edibleitems.classes.RottenApple;
 import ec.edu.player.PlayerGame;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -25,7 +25,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -34,15 +33,13 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import utils.Chronometer;
 
-public class ScreenGame {
+public class ScreenGameView {
 
-    private int[] food = new int[2];
     private Chronometer chronometer;
     private Boolean running = true;
     private Image image;
     private ImageView ivApple;
     private final Integer SNAKEBODY = 20, SCREENCANVASWIDTH = 800, SCREENHEIGHT = 600;
-    private Font font = new Font("Arial", 50);
     private KeyDirections direction = KeyDirections.RIGHT;
     private LinkedList<int[]> snakeWay = new LinkedList<>();
     private int level;
@@ -54,7 +51,10 @@ public class ScreenGame {
     private Timeline timeline;
     private String name;
     private PlayerGame player;
-    
+    @SuppressWarnings("unused")
+    private Font gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 25), font;
+    private Apple apple = new Apple();
+    private RottenApple rottenApple = new RottenApple();
 
     private Color[] colorHeadSnake = new Color[] {
             Color.web("#228B22"), // Verde Bosque
@@ -95,13 +95,14 @@ public class ScreenGame {
             Color.web("#90EE90") // Verde Claro
     };
 
-    public ScreenGame() {
-        setLevel(1);
-        setAppleEaten(0);
-        setAux(0);
-        setPressedTimes(0);
-        setScore(0);
-        setSnakeVelocity(200);
+    public ScreenGameView() {
+        // setLevel(1);
+        // setAppleEaten(0);
+        // setAux(0);
+        // setPressedTimes(0);
+        // setScore(0);
+        // setSnakeVelocity(200);
+        setSettingsToGame();
         player = new PlayerGame(null, getScore());
     }
 
@@ -118,7 +119,7 @@ public class ScreenGame {
     }
 
     public void setSnakeVelocity(int snakeVelocity) {
-        if (snakeVelocity > 0) {
+        if (snakeVelocity > 80) {
             this.snakeVelocity = snakeVelocity;
         }
     }
@@ -171,10 +172,26 @@ public class ScreenGame {
         return SCREENHEIGHT;
     }
 
+    public Boolean getRunning() {
+        return running;
+    }
+
+    public void setRunning(Boolean running) {
+        this.running = running;
+    }
+
+    public PlayerGame getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(PlayerGame player) {
+        this.player = player;
+    }
+
     public void initialScreenGame(Stage gameScreen, Group initialScreenComponents,
             Scene intialScreenScene) {
 
-        Font gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 43);
+        gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 43);
 
         image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/apple.png")));
         ivApple = new ImageView(image);
@@ -274,7 +291,6 @@ public class ScreenGame {
         instructions.setLayoutY(450);
         intialScreenScene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                // gameScreenSnake(gameScreen);
                 menu(gameScreen);
             }
         });
@@ -288,8 +304,8 @@ public class ScreenGame {
         initialScreenComponents.getChildren().addAll(nodes);
     }
 
-    public void menu(Stage gameScreen) {
-        Font gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 25);
+    private void menu(Stage gameScreen) {
+        gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 25);
         Group root = new Group();
         Scene menu = new Scene(root, SCREENCANVASWIDTH, SCREENHEIGHT, Color.GREENYELLOW);
         gameScreen.setScene(menu);
@@ -359,20 +375,20 @@ public class ScreenGame {
         newExitGameButton.setBackground(background);
         newExitGameButton.setOnAction(event -> exitGam());
 
-        image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/applePixel.png")));
-        ImageView imageMenu = new ImageView(image);
+        ImageView imageMenu = new ImageView(new Image(apple.getPathImage())),
+                imageMenu2 = new ImageView(new Image(apple.getPathImage()));
         imageMenu.setFitHeight(75);
         imageMenu.setFitWidth(75);
         imageMenu.setX(280);
         imageMenu.setY(47);
 
-        ImageView imageMenu2 = new ImageView(image);
         imageMenu2.setFitHeight(75);
         imageMenu2.setFitWidth(75);
         imageMenu2.setX(440);
         imageMenu2.setY(47);
 
-        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(1), imageMenu2);
+        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(1), imageMenu2),
+                translateTransition1 = new TranslateTransition(Duration.seconds(1), imageMenu);
         translateTransition.setFromX(0); // pos inicial
         translateTransition.setToX(25); // pos final
         translateTransition.setFromY(0); // pos inicial y
@@ -380,7 +396,6 @@ public class ScreenGame {
         translateTransition.setCycleCount(TranslateTransition.INDEFINITE); // ciclo repetivo
         translateTransition.setAutoReverse(true);
 
-        TranslateTransition translateTransition1 = new TranslateTransition(Duration.seconds(1), imageMenu);
         translateTransition1.setFromX(0);
         translateTransition1.setToX(-25);
         translateTransition1.setFromY(0);
@@ -402,7 +417,6 @@ public class ScreenGame {
         root.getChildren().add(text1);
         addInitialScreenComponents(root, rectangle, rectangle1, rectangle2, rectangle3);
 
-        // newGameButton.setEffect(new ColorInput(75, 85, 250, 40, Color.RED));
     }
 
     private void exitGam() {
@@ -418,7 +432,7 @@ public class ScreenGame {
         enterName.getIcons().add(gameScreen.getIcons().getFirst());
         Group root = new Group();
         Scene scene = new Scene(root, 450, 150, Color.GREENYELLOW);
-        Font gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 15);
+        gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 15);
 
         font = new Font(5);
         enterName.setResizable(false);
@@ -443,6 +457,7 @@ public class ScreenGame {
                 player.setNamePlayer(name.getText());
                 System.out.println("Entered Name: " + player.getNamePlayer());
                 if (!name.getText().isEmpty() && !name.getText().isBlank()) {
+                    setPlayer(new PlayerGame(name.getText(), 0));
                     enterName.close();
                     gameScreenSnake(gameScreen);
                 }
@@ -458,11 +473,11 @@ public class ScreenGame {
         anonymous.setText("Play anonymous");
         anonymous.setOnAction(event -> {
             player.setNamePlayer("anonymous");
+            setPlayer(new PlayerGame("anonymous", 0));
             enterName.close();
             gameScreenSnake(gameScreen);
         });
 
-        
         root.getChildren().add(anonymous);
         root.getChildren().add(name);
         root.getChildren().add(text);
@@ -473,12 +488,13 @@ public class ScreenGame {
     private void gameScreenSnake(Stage gameScreen) {
         Canvas gameZone = new Canvas(SCREENCANVASWIDTH, SCREENHEIGHT);
         GraphicsContext gc = gameZone.getGraphicsContext2D();
-        timeline = new Timeline(new KeyFrame(Duration.millis(getSnakeVelocity()), e -> run(gc, timeline)));
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        gameZone.relocate(0, 0);
-
         StackPane root = new StackPane(gameZone);
         Scene gameScreenScene = new Scene(root, SCREENCANVASWIDTH, SCREENHEIGHT);
+        setSettingsToGame();
+        timeline = new Timeline(
+                new KeyFrame(Duration.millis(getSnakeVelocity()), e -> run(gc, timeline, gameScreen, gameScreenScene)));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        gameZone.relocate(0, 0);
 
         gameScreenScene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.UP && direction != KeyDirections.DOWN) {
@@ -506,29 +522,37 @@ public class ScreenGame {
         snakeWay.clear();
         snakeWay.add(new int[] { 22 / 2, 22 / 2 });
         snakeWay.add(new int[] { 22 / 2, (22 / 2) - 1 });
-        placeFood();
         chronometer = new Chronometer();
         chronometer.initChronometer();
-        // player = new PlayerGame(null, getScore());
     }
 
-    private void run(GraphicsContext gc, Timeline timeline ) {
-        Font gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 3);
-
-        font = new Font(5);
-        if (!running) {
+    private void run(GraphicsContext gc, Timeline timeline, Stage gameScreen, Scene gameScreenScene) {
+        if (!getRunning()) {
             gc.setFill(Color.RED);
-            gc.setFont(gameFont);
-            gc.fillText("Game Over", SCREENCANVASWIDTH / 2 - 100, SCREENHEIGHT / 2 - 50);
+            gc.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 33));
+            gc.fillText("Game Over", SCREENCANVASWIDTH / 2 - 140, SCREENHEIGHT / 2 - 50);
+            showMenuAfterGame(gameScreen, gc, gameScreenScene);
+            timeline.stop();
             return;
         }
-
-        moveSnake(gc, timeline);
+        apple.setLevelGame(getLevel());
+        moveSnake(gc, timeline, gameScreen, gameScreenScene);
         checkCollision();
         draw(gc);
     }
 
-    private void moveSnake(GraphicsContext gc, Timeline timeline) {
+    private void showMenuAfterGame(Stage gameScreen, GraphicsContext gc, Scene gameScreenScene) {
+        gc.setFill(Color.RED);
+        gc.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 15));
+        gc.fillText("Presione ENTER para regresar al menú", SCREENCANVASWIDTH / 2 - 250, SCREENHEIGHT / 2 - 10);
+        gameScreenScene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                menu(gameScreen);
+            }
+        });
+    }
+
+    private void moveSnake(GraphicsContext gc, Timeline timeline, Stage gameScreen, Scene gameScreenScene) {
         int[] head = snakeWay.getFirst();
         int newX = head[0];
         int newY = head[1];
@@ -543,59 +567,100 @@ public class ScreenGame {
         int[] newHead = { newX, newY };
         snakeWay.addFirst(newHead);
 
-        if (newHead[0] == food[0] && newHead[1] == food[1]) {
-            placeFood();
-            // todo: Al comer
+        if (newHead[0] == apple.getFood()[0] && newHead[1] == apple.getFood()[1]) {
+
+            apple.getPositions().clear();
+            apple.generateFruit();
+            rottenApple.generateFruit();
+
             setAppleEaten(getAppleEaten() + 1);
             if (getAppleEaten() % 3 == 0) {
+                // Modify level and update levels from apple, rottenApple and banana classes
                 setLevel(getLevel() + 1);
+                setNewLevelToClasses();
                 if (getLevel() % 5 == 0 && getAux() < 10) {
                     setAux(getAux() + 1);
                     setSnakeVelocity(getSnakeVelocity() - 10);
-                    increaseSpeed(gc, timeline, getSnakeVelocity());
+                    increaseDecreasedSpeed(gc, timeline, getSnakeVelocity(), gameScreen, gameScreenScene);
                 }
             }
             player.calculateScore(getPressedTimes());
             setScore(player.getScore());
             setPressedTimes(0); // Snake already ate apple, so reset value into 0
+        } else if (getLevel() >= 5) {
+            if (newHead[0] == rottenApple.getFood()[0] && newHead[1] == rottenApple.getFood()[1]) {
+                rottenApple.getPositions().clear();
+                rottenApple.generateFruit();
+                if (getLevel() % 5 == 0) {
+                    setAux(getAux() - 1);
+                }
+                setLevel(getLevel() - 1);
+                setNewLevelToClasses();
+                snakeWay.removeLast();
+                snakeWay.removeLast();
+                setAppleEaten(getAppleEaten() - 1);
+            } else
+                snakeWay.removeLast();
         } else {
             snakeWay.removeLast();
         }
     }
 
-    public void increaseSpeed(GraphicsContext gc, Timeline timeline, double newSpeedMillis) {
-        timeline.stop();
-        KeyFrame keyFrame = new KeyFrame(Duration.millis(newSpeedMillis), e -> run(gc, timeline));
-        timeline.getKeyFrames().setAll(keyFrame);
-        timeline.play();
+    private void setNewLevelToClasses() {
+        apple.setLevelGame(getLevel());
+        rottenApple.setLevelGame(getLevel());
     }
 
-    private void placeFood() {
-        Random rand = new Random();
-        food[0] = rand.nextInt(22) + 2;
-        food[1] = rand.nextInt(22) + 2;
+    private void setSettingsToGame() {
+        setRunning(true);
+        setLevel(1);
+        setAppleEaten(0);
+        setAux(0);
+        setPressedTimes(0);
+        setScore(0);
+        setSnakeVelocity(200);
+    }
+
+    public void increaseDecreasedSpeed(GraphicsContext gc, Timeline timeline, double newSpeedMillis, Stage gameScreen,
+            Scene gameScreenScene) {
+        timeline.stop();
+        KeyFrame keyFrame = new KeyFrame(Duration.millis(newSpeedMillis),
+                e -> run(gc, timeline, gameScreen, gameScreenScene));
+        timeline.getKeyFrames().setAll(keyFrame);
+        timeline.play();
     }
 
     private void checkCollision() {
         int[] head = snakeWay.getFirst();
         if (head[0] <= 0 || head[0] >= 39 || head[1] <= 0 || head[1] >= 26) {
-            running = false;
+            setRunning(false);
         }
         for (int i = 1; i < snakeWay.size(); i++) {
             if (head[0] == snakeWay.get(i)[0] && head[1] == snakeWay.get(i)[1]) {
-                running = false;
+                setRunning(false);
             }
         }
 
-        if (!running)
+        if (!getRunning())
             chronometer.stopChronometer();
     }
 
     private void draw(GraphicsContext gc) {
+        gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 13);
         gc.clearRect(0, 0, SCREENCANVASWIDTH, SCREENHEIGHT);
 
         gc.setFill(colorsBackground[getAux()]);
         gc.fillRect(20, 0, SCREENCANVASWIDTH - 40, SCREENHEIGHT - 80);
+
+        gc.drawImage(new Image(apple.getPathImage()), apple.getPositions().get(0)[0] * SNAKEBODY,
+                apple.getPositions().get(0)[1] * SNAKEBODY,
+                SNAKEBODY + 7, SNAKEBODY + 7);
+
+        if (getLevel() >= 5) {
+            gc.drawImage(new Image(rottenApple.getPathImage()), rottenApple.getPositions().get(0)[0] * SNAKEBODY,
+                    rottenApple.getPositions().get(0)[1] * SNAKEBODY,
+                    SNAKEBODY + 7, SNAKEBODY + 7);
+        }
 
         gc.setFill(colorSnake[getAux()]);
         for (int[] part : snakeWay) {
@@ -614,18 +679,13 @@ public class ScreenGame {
         gc.setFill(Color.BROWN);
         gc.fillRect(0, 520, SCREENCANVASWIDTH, 20);
 
-        image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/applePixel.png")));
-        Font gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 13);
-
-        gc.drawImage(image, food[0] * SNAKEBODY, food[1] * SNAKEBODY, SNAKEBODY, SNAKEBODY);
-
         gc.setFill(Color.WHEAT);
         gc.fillRect(0, 540, SCREENCANVASWIDTH, 60);
 
-        
+        font = new Font(35);
         gc.setFill(Color.BLACK);
         gc.setFont(gameFont);
-        gc.fillText(chronometer.getChronometer(), SCREENCANVASWIDTH - 200, SCREENHEIGHT - 30);
+        gc.fillText(chronometer.getChronometer(), SCREENCANVASWIDTH - 180, SCREENHEIGHT - 30);
 
         gc.setFill(Color.BLACK);
         gc.setFont(gameFont);
@@ -633,7 +693,7 @@ public class ScreenGame {
 
         gc.setFill(Color.BLACK);
         gc.setFont(gameFont);
-        gc.fillText("SCORE " + getScore(), 150, SCREENHEIGHT - 30);
+        gc.fillText("SCORE " + player.getScore(), 150, SCREENHEIGHT - 30);
 
         gc.setFill(Color.BLACK);
         gc.setFont(gameFont);
