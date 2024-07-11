@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.Objects;
 import ec.edu.KeyDirections;
 import ec.edu.edibleitems.classes.Apple;
+import ec.edu.edibleitems.classes.Banana;
 import ec.edu.edibleitems.classes.RottenApple;
 import ec.edu.player.PlayerGame;
 import javafx.animation.KeyFrame;
@@ -35,6 +36,7 @@ import utils.Chronometer;
 
 public class ScreenGameView {
 
+    // Attributes
     private Chronometer chronometer;
     private Boolean running = true;
     private Image image;
@@ -55,6 +57,7 @@ public class ScreenGameView {
     private Font gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 25), font;
     private Apple apple = new Apple();
     private RottenApple rottenApple = new RottenApple();
+    private Banana banana = new Banana();
 
     private Color[] colorHeadSnake = new Color[] {
             Color.web("#228B22"), // Verde Bosque
@@ -95,17 +98,13 @@ public class ScreenGameView {
             Color.web("#90EE90") // Verde Claro
     };
 
+    // Constructor
     public ScreenGameView() {
-        // setLevel(1);
-        // setAppleEaten(0);
-        // setAux(0);
-        // setPressedTimes(0);
-        // setScore(0);
-        // setSnakeVelocity(200);
         setSettingsToGame();
         player = new PlayerGame(null, getScore());
     }
 
+    // Getters & Setters
     public String getName() {
         return name;
     }
@@ -497,6 +496,10 @@ public class ScreenGameView {
         gameZone.relocate(0, 0);
 
         gameScreenScene.setOnKeyPressed(event -> {
+
+            // TODO: Implementar bananas en el juego y revisar que cuando se aplaste arriba
+            // y a la derecha o a la izquierda no genere problema
+
             if (event.getCode() == KeyCode.UP && direction != KeyDirections.DOWN) {
                 direction = KeyDirections.UP;
                 setPressedTimes(getPressedTimes() + 1);
@@ -571,7 +574,6 @@ public class ScreenGameView {
 
             apple.getPositions().clear();
             apple.generateFruit();
-            rottenApple.generateFruit();
 
             setAppleEaten(getAppleEaten() + 1);
             if (getAppleEaten() % 3 == 0) {
@@ -599,6 +601,11 @@ public class ScreenGameView {
                 snakeWay.removeLast();
                 snakeWay.removeLast();
                 setAppleEaten(getAppleEaten() - 1);
+            } else if (newHead[0] == banana.getFood()[0] && newHead[1] == banana.getFood()[1]) {
+                banana.getPositions().clear();
+                banana.generateFruit();
+                setSnakeVelocity(getSnakeVelocity() + 10);
+                increaseDecreasedSpeed(gc, timeline, getSnakeVelocity(), gameScreen, gameScreenScene);
             } else
                 snakeWay.removeLast();
         } else {
@@ -659,7 +666,12 @@ public class ScreenGameView {
         if (getLevel() >= 5) {
             gc.drawImage(new Image(rottenApple.getPathImage()), rottenApple.getPositions().get(0)[0] * SNAKEBODY,
                     rottenApple.getPositions().get(0)[1] * SNAKEBODY,
-                    SNAKEBODY + 7, SNAKEBODY + 7);
+                    SNAKEBODY, SNAKEBODY);
+            if (getLevel() >= 10) {
+                gc.drawImage(new Image(banana.getPathImage()), banana.getPositions().get(0)[0] * SNAKEBODY,
+                        banana.getPositions().get(0)[1] * SNAKEBODY,
+                        SNAKEBODY, SNAKEBODY);
+            }
         }
 
         gc.setFill(colorSnake[getAux()]);

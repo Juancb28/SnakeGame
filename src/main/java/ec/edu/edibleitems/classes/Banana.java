@@ -8,7 +8,7 @@ import ec.edu.edibleitems.abstractClasses.Fruit;
 public class Banana extends Fruit {
 
     public Banana() {
-
+        positions.add(placeFood());
     }
 
     @Override
@@ -18,8 +18,8 @@ public class Banana extends Fruit {
 
     @Override
     public void generateFruit() {
-        if (getLevelGame() > 10) {
-            
+        if (getLevelGame() >= 10) {
+            super.generateFruit();
         }
     }
 }
