@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.Objects;
 import ec.edu.KeyDirections;
 import ec.edu.edibleitems.classes.Apple;
+import ec.edu.edibleitems.classes.Orange;
 import ec.edu.edibleitems.classes.RottenApple;
 import ec.edu.player.PlayerGame;
 import javafx.animation.KeyFrame;
@@ -35,8 +36,10 @@ import utils.Chronometer;
 
 public class ScreenGameView {
 
+    // Attributes
     private Chronometer chronometer;
     private Boolean running = true;
+    private Boolean isPaused = false;
     private Image image;
     private ImageView ivApple;
     private final Integer SNAKEBODY = 20, SCREENCANVASWIDTH = 800, SCREENHEIGHT = 600;
@@ -55,6 +58,7 @@ public class ScreenGameView {
     private Font gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 25), font;
     private Apple apple = new Apple();
     private RottenApple rottenApple = new RottenApple();
+    private Orange orange = new Orange();
 
     private Color[] colorHeadSnake = new Color[] {
             Color.web("#228B22"), // Verde Bosque
@@ -95,17 +99,13 @@ public class ScreenGameView {
             Color.web("#90EE90") // Verde Claro
     };
 
+    // Constructor
     public ScreenGameView() {
-        // setLevel(1);
-        // setAppleEaten(0);
-        // setAux(0);
-        // setPressedTimes(0);
-        // setScore(0);
-        // setSnakeVelocity(200);
         setSettingsToGame();
         player = new PlayerGame(null, getScore());
     }
 
+    // Getters & Setters
     public String getName() {
         return name;
     }
@@ -284,7 +284,7 @@ public class ScreenGameView {
         playButton.setY(365);
         initialScreenComponents.getChildren().add(playButton);
 
-        Label instructions = new Label("Presione Enter para Jugar");
+        Label instructions = new Label("Press Enter to play");
         instructions.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 15));
         instructions.setTextFill(Color.BLACK);
         instructions.setLayoutX(200);
@@ -459,6 +459,7 @@ public class ScreenGameView {
                 if (!name.getText().isEmpty() && !name.getText().isBlank()) {
                     setPlayer(new PlayerGame(name.getText(), 0));
                     enterName.close();
+                    setSettingsToGame();
                     gameScreenSnake(gameScreen);
                 }
             }
@@ -475,6 +476,7 @@ public class ScreenGameView {
             player.setNamePlayer("anonymous");
             setPlayer(new PlayerGame("anonymous", 0));
             enterName.close();
+            setSettingsToGame();
             gameScreenSnake(gameScreen);
         });
 
@@ -490,13 +492,19 @@ public class ScreenGameView {
         GraphicsContext gc = gameZone.getGraphicsContext2D();
         StackPane root = new StackPane(gameZone);
         Scene gameScreenScene = new Scene(root, SCREENCANVASWIDTH, SCREENHEIGHT);
-        setSettingsToGame();
+        // setSettingsToGame();
         timeline = new Timeline(
                 new KeyFrame(Duration.millis(getSnakeVelocity()), e -> run(gc, timeline, gameScreen, gameScreenScene)));
         timeline.setCycleCount(Timeline.INDEFINITE);
         gameZone.relocate(0, 0);
 
         gameScreenScene.setOnKeyPressed(event -> {
+
+            /*
+             * TODO: Implementar bananas en el juego y revisar que cuando se aplaste arriba
+             * y a la derecha o a la izquierda no genere problema.
+             */
+
             if (event.getCode() == KeyCode.UP && direction != KeyDirections.DOWN) {
                 direction = KeyDirections.UP;
                 setPressedTimes(getPressedTimes() + 1);
@@ -519,26 +527,81 @@ public class ScreenGameView {
     }
 
     private void startGame() {
-        snakeWay.clear();
-        snakeWay.add(new int[] { 22 / 2, 22 / 2 });
-        snakeWay.add(new int[] { 22 / 2, (22 / 2) - 1 });
-        chronometer = new Chronometer();
-        chronometer.initChronometer();
+        if (!isPaused) {
+            snakeWay.clear();
+            snakeWay.add(new int[] { 22 / 2, 22 / 2 });
+            snakeWay.add(new int[] { 22 / 2, (22 / 2) - 1 });
+            chronometer = new Chronometer();
+            chronometer.initChronometer();
+        }
     }
 
     private void run(GraphicsContext gc, Timeline timeline, Stage gameScreen, Scene gameScreenScene) {
         if (!getRunning()) {
+
+            gc.clearRect(20, 0, SCREENCANVASWIDTH - 40, SCREENHEIGHT - 80);
+
             gc.setFill(Color.RED);
             gc.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 33));
             gc.fillText("Game Over", SCREENCANVASWIDTH / 2 - 140, SCREENHEIGHT / 2 - 50);
+
+            gc.setFill(Color.RED);
+            gc.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 13));
+            gc.fillText("Apples eaten: " + getAppleEaten(), SCREENCANVASWIDTH / 2 - 50, SCREENHEIGHT / 2 + 50);
+
+            gc.setFill(Color.RED);
+            gc.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 13));
+            gc.fillText("Level: " + getLevel(), SCREENCANVASWIDTH / 2 - 250, SCREENHEIGHT / 2 + 50);
+
+            gc.drawImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/skull.png"))),
+                    SCREENCANVASWIDTH / 2 - 300, SCREENHEIGHT / 2 + 35, SNAKEBODY, SNAKEBODY);
+
+            gc.drawImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/skull.png"))),
+                    SCREENCANVASWIDTH / 2 + 250, SCREENHEIGHT / 2 + 35, SNAKEBODY, SNAKEBODY);
+
             showMenuAfterGame(gameScreen, gc, gameScreenScene);
+
+            isPaused = false;
+
             timeline.stop();
             return;
         }
+
+        gameScreenScene.setOnKeyReleased(event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                chronometer.stopChronometer();
+                waitingMode(gameScreen, gc, gameScreenScene, timeline);
+            }
+        });
+
         apple.setLevelGame(getLevel());
+        rottenApple.setLevelGame(getLevel());
+        orange.setLevelGame(getLevel());
         moveSnake(gc, timeline, gameScreen, gameScreenScene);
         checkCollision();
         draw(gc);
+    }
+
+    private void waitingMode(Stage gameScreen, GraphicsContext gc, Scene gameScreenScene, Timeline timeline) {
+
+        timeline.stop();
+        gc.clearRect(20, 0, SCREENCANVASWIDTH - 40, SCREENHEIGHT - 80);
+        gc.setFill(Color.RED);
+        gc.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 33));
+        gc.fillText("Waiting...", SCREENCANVASWIDTH / 2 - 140, SCREENHEIGHT / 2 - 50);
+
+        gc.setFill(Color.RED);
+        gc.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 13));
+        gc.fillText(" --> Press ENTER to resume game <--", SCREENCANVASWIDTH / 2 - 250, SCREENHEIGHT / 2 + 50);
+
+        gameScreenScene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                chronometer.resumeChronometer();
+                isPaused = true;
+                gameScreenSnake(gameScreen);
+            }
+        });
+
     }
 
     private void showMenuAfterGame(Stage gameScreen, GraphicsContext gc, Scene gameScreenScene) {
@@ -547,6 +610,7 @@ public class ScreenGameView {
         gc.fillText("Presione ENTER para regresar al menú", SCREENCANVASWIDTH / 2 - 250, SCREENHEIGHT / 2 - 10);
         gameScreenScene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
+                setSettingsToGame();
                 menu(gameScreen);
             }
         });
@@ -568,15 +632,14 @@ public class ScreenGameView {
         snakeWay.addFirst(newHead);
 
         if (newHead[0] == apple.getFood()[0] && newHead[1] == apple.getFood()[1]) {
-
             apple.getPositions().clear();
             apple.generateFruit();
             rottenApple.generateFruit();
-
+            orange.generateFruit();
             setAppleEaten(getAppleEaten() + 1);
             if (getAppleEaten() % 3 == 0) {
-                // Modify level and update levels from apple, rottenApple and banana classes
-                setLevel(getLevel() + 1);
+                setLevel(getLevel() + 1); // Modify level and update levels from apple, rottenApple and banana classes
+                orange.setMaxUse(3);
                 setNewLevelToClasses();
                 if (getLevel() % 5 == 0 && getAux() < 10) {
                     setAux(getAux() + 1);
@@ -591,6 +654,8 @@ public class ScreenGameView {
             if (newHead[0] == rottenApple.getFood()[0] && newHead[1] == rottenApple.getFood()[1]) {
                 rottenApple.getPositions().clear();
                 rottenApple.generateFruit();
+                orange.generateFruit();
+                apple.generateFruit();
                 if (getLevel() % 5 == 0) {
                     setAux(getAux() - 1);
                 }
@@ -599,6 +664,21 @@ public class ScreenGameView {
                 snakeWay.removeLast();
                 snakeWay.removeLast();
                 setAppleEaten(getAppleEaten() - 1);
+            } else if (getLevel() >= 10) {
+
+                if ((newHead[0] == orange.getFood()[0] && newHead[1] == orange.getFood()[1])
+                        && orange.getMaxUse() > 0) {
+                    apple.generateFruit();
+                    rottenApple.generateFruit();
+                    orange.getPositions().clear();
+                    orange.generateFruit();
+
+                    setSnakeVelocity(getSnakeVelocity() + 10);
+                    increaseDecreasedSpeed(gc, timeline, getSnakeVelocity(), gameScreen, gameScreenScene);
+
+                    orange.setMaxUse(orange.getMaxUse() - 1);
+                } else
+                    snakeWay.removeLast();
             } else
                 snakeWay.removeLast();
         } else {
@@ -609,6 +689,7 @@ public class ScreenGameView {
     private void setNewLevelToClasses() {
         apple.setLevelGame(getLevel());
         rottenApple.setLevelGame(getLevel());
+        orange.setLevelGame(getLevel());
     }
 
     private void setSettingsToGame() {
@@ -623,9 +704,15 @@ public class ScreenGameView {
 
     public void increaseDecreasedSpeed(GraphicsContext gc, Timeline timeline, double newSpeedMillis, Stage gameScreen,
             Scene gameScreenScene) {
+        KeyFrame keyFrame;
         timeline.stop();
-        KeyFrame keyFrame = new KeyFrame(Duration.millis(newSpeedMillis),
-                e -> run(gc, timeline, gameScreen, gameScreenScene));
+        if (newSpeedMillis > 200) {
+            keyFrame = new KeyFrame(Duration.millis(200),
+                    e -> run(gc, timeline, gameScreen, gameScreenScene));
+        } else {
+            keyFrame = new KeyFrame(Duration.millis(newSpeedMillis),
+                    e -> run(gc, timeline, gameScreen, gameScreenScene));
+        }
         timeline.getKeyFrames().setAll(keyFrame);
         timeline.play();
     }
@@ -659,7 +746,11 @@ public class ScreenGameView {
         if (getLevel() >= 5) {
             gc.drawImage(new Image(rottenApple.getPathImage()), rottenApple.getPositions().get(0)[0] * SNAKEBODY,
                     rottenApple.getPositions().get(0)[1] * SNAKEBODY,
-                    SNAKEBODY + 7, SNAKEBODY + 7);
+                    SNAKEBODY, SNAKEBODY);
+            if (getLevel() >= 10 && orange.getMaxUse() > 0) {
+                gc.drawImage(new Image(orange.getPathImage()), orange.getPositions().get(0)[0] * SNAKEBODY,
+                        orange.getPositions().get(0)[1] * SNAKEBODY, SNAKEBODY + 10, SNAKEBODY + 10);
+            }
         }
 
         gc.setFill(colorSnake[getAux()]);

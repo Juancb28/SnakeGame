@@ -54,6 +54,20 @@ public class Chronometer {
         return String.format("TIME %02d:%02d", getMinutes(), getLeftSeconds());
     }
 
+    public void resumeChronometer(){
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                seconds++;
+                setMinutes(getMinutes());
+                setLeftSeconds(getLeftSeconds());
+                setMinutes(seconds / 60);
+                setLeftSeconds(seconds % 60);
+            }
+        }, 1000, 1000);
+    }
+
     public void stopChronometer() {
         timer.cancel();
     }
