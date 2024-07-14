@@ -5,15 +5,15 @@ import java.util.Objects;
 
 import ec.edu.edibleitems.abstractClasses.Fruit;
 
-public class Banana extends Fruit {
+public class Orange extends Fruit {
 
-    public Banana() {
+    public Orange() {
         positions.add(placeFood());
     }
 
     @Override
     public InputStream getPathImage() {
-        return Objects.requireNonNull(getClass().getResourceAsStream("/images/banana.png"));
+        return Objects.requireNonNull(getClass().getResourceAsStream("/images/orange.png"));
     }
 
     @Override
