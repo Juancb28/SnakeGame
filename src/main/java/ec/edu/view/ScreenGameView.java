@@ -536,13 +536,40 @@ public class ScreenGameView {
 
     private void run(GraphicsContext gc, Timeline timeline, Stage gameScreen, Scene gameScreenScene) {
         if (!getRunning()) {
+
+            gc.clearRect(20, 0, SCREENCANVASWIDTH - 40, SCREENHEIGHT - 80);
+
             gc.setFill(Color.RED);
             gc.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 33));
             gc.fillText("Game Over", SCREENCANVASWIDTH / 2 - 140, SCREENHEIGHT / 2 - 50);
+
+            gc.setFill(Color.RED);
+            gc.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 13));
+            gc.fillText("Apples eaten: " + getAppleEaten(), SCREENCANVASWIDTH / 2 - 50, SCREENHEIGHT / 2 + 50);
+
+            gc.setFill(Color.RED);
+            gc.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 13));
+            gc.fillText("Level: " + getLevel(), SCREENCANVASWIDTH / 2 - 250, SCREENHEIGHT / 2 + 50);
+
+            gc.drawImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/skull.png"))),
+                    SCREENCANVASWIDTH / 2 - 300, SCREENHEIGHT / 2 + 35, SNAKEBODY, SNAKEBODY);
+
+            gc.drawImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/skull.png"))),
+                    SCREENCANVASWIDTH / 2 + 250, SCREENHEIGHT / 2 + 35, SNAKEBODY, SNAKEBODY);
+
             showMenuAfterGame(gameScreen, gc, gameScreenScene);
             timeline.stop();
             return;
         }
+
+        /*
+         * gameScreenScene.setOnKeyReleased(event -> {
+         * if (event.getCode() == KeyCode.ESCAPE){
+         * 
+         * }
+         * });
+         */
+
         apple.setLevelGame(getLevel());
         rottenApple.setLevelGame(getLevel());
         orange.setLevelGame(getLevel());
@@ -550,6 +577,12 @@ public class ScreenGameView {
         checkCollision();
         draw(gc);
     }
+
+    /*
+     * private void waitingMode(){
+     * 
+     * }
+     */
 
     private void showMenuAfterGame(Stage gameScreen, GraphicsContext gc, Scene gameScreenScene) {
         gc.setFill(Color.RED);
