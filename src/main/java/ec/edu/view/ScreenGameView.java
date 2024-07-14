@@ -585,8 +585,9 @@ public class ScreenGameView {
             setAppleEaten(getAppleEaten() + 1);
             if (getAppleEaten() % 3 == 0) {
                 setLevel(getLevel() + 1); // Modify level and update levels from apple, rottenApple and banana classes
+                orange.setMaxUse(3);
                 setNewLevelToClasses();
-                if (getLevel() % 5 == 0 && getAux() < 10) { 
+                if (getLevel() % 5 == 0 && getAux() < 10) {
                     setAux(getAux() + 1);
                     setSnakeVelocity(getSnakeVelocity() - 10);
                     increaseDecreasedSpeed(gc, timeline, getSnakeVelocity(), gameScreen, gameScreenScene);
@@ -610,13 +611,18 @@ public class ScreenGameView {
                 snakeWay.removeLast();
                 setAppleEaten(getAppleEaten() - 1);
             } else if (getLevel() >= 10) {
-                if (newHead[0] == orange.getFood()[0] && newHead[1] == orange.getFood()[1]) {
-                    orange.getPositions().clear();
-                    orange.generateFruit();
+
+                if ((newHead[0] == orange.getFood()[0] && newHead[1] == orange.getFood()[1])
+                        && orange.getMaxUse() > 0) {
                     apple.generateFruit();
                     rottenApple.generateFruit();
+                    orange.getPositions().clear();
+                    orange.generateFruit();
+
                     setSnakeVelocity(getSnakeVelocity() + 10);
                     increaseDecreasedSpeed(gc, timeline, getSnakeVelocity(), gameScreen, gameScreenScene);
+
+                    orange.setMaxUse(orange.getMaxUse() - 1);
                 } else
                     snakeWay.removeLast();
             } else
@@ -644,9 +650,15 @@ public class ScreenGameView {
 
     public void increaseDecreasedSpeed(GraphicsContext gc, Timeline timeline, double newSpeedMillis, Stage gameScreen,
             Scene gameScreenScene) {
+        KeyFrame keyFrame;
         timeline.stop();
-        KeyFrame keyFrame = new KeyFrame(Duration.millis(newSpeedMillis),
-                e -> run(gc, timeline, gameScreen, gameScreenScene));
+        if (newSpeedMillis > 200) {
+            keyFrame = new KeyFrame(Duration.millis(200),
+                    e -> run(gc, timeline, gameScreen, gameScreenScene));
+        } else {
+            keyFrame = new KeyFrame(Duration.millis(newSpeedMillis),
+                    e -> run(gc, timeline, gameScreen, gameScreenScene));
+        }
         timeline.getKeyFrames().setAll(keyFrame);
         timeline.play();
     }
@@ -681,7 +693,7 @@ public class ScreenGameView {
             gc.drawImage(new Image(rottenApple.getPathImage()), rottenApple.getPositions().get(0)[0] * SNAKEBODY,
                     rottenApple.getPositions().get(0)[1] * SNAKEBODY,
                     SNAKEBODY, SNAKEBODY);
-            if (getLevel() >= 10) {
+            if (getLevel() >= 10 && orange.getMaxUse() > 0) {
                 gc.drawImage(new Image(orange.getPathImage()), orange.getPositions().get(0)[0] * SNAKEBODY,
                         orange.getPositions().get(0)[1] * SNAKEBODY, SNAKEBODY + 10, SNAKEBODY + 10);
             }

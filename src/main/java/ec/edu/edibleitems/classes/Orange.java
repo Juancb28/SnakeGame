@@ -7,8 +7,22 @@ import ec.edu.edibleitems.abstractClasses.Fruit;
 
 public class Orange extends Fruit {
 
+    // Attributes
+    private int maxUse;
+
+    // Constructor
     public Orange() {
         positions.add(placeFood());
+        setMaxUse(3);
+    }
+
+    // Getters & Setters
+    public int getMaxUse() {
+        return maxUse;
+    }
+
+    public void setMaxUse(int maxUse) {
+        this.maxUse = maxUse;
     }
 
     @Override
@@ -22,4 +36,6 @@ public class Orange extends Fruit {
             super.generateFruit();
         }
     }
+
+
 }
