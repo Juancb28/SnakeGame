@@ -497,8 +497,12 @@ public class ScreenGameView {
 
         gameScreenScene.setOnKeyPressed(event -> {
 
-            // TODO: Implementar bananas en el juego y revisar que cuando se aplaste arriba
-            // y a la derecha o a la izquierda no genere problema
+            /*
+             * TODO: Implementar bananas en el juego y revisar que cuando se aplaste arriba
+             * y a la derecha o a la izquierda no genere problema.
+             * 
+             * TODO: Cambiar banana a naranaja/mandarina y restringir que por cada nivel > 10 se coma solo 3
+             */
 
             if (event.getCode() == KeyCode.UP && direction != KeyDirections.DOWN) {
                 direction = KeyDirections.UP;
@@ -539,6 +543,8 @@ public class ScreenGameView {
             return;
         }
         apple.setLevelGame(getLevel());
+        rottenApple.setLevelGame(getLevel());
+        banana.setLevelGame(getLevel());
         moveSnake(gc, timeline, gameScreen, gameScreenScene);
         checkCollision();
         draw(gc);
@@ -571,7 +577,6 @@ public class ScreenGameView {
         snakeWay.addFirst(newHead);
 
         if (newHead[0] == apple.getFood()[0] && newHead[1] == apple.getFood()[1]) {
-
             apple.getPositions().clear();
             apple.generateFruit();
 
@@ -580,7 +585,7 @@ public class ScreenGameView {
                 // Modify level and update levels from apple, rottenApple and banana classes
                 setLevel(getLevel() + 1);
                 setNewLevelToClasses();
-                if (getLevel() % 5 == 0 && getAux() < 10) {
+                if (getLevel() % 5 == 0 && getAux() < 10) { // TODO: verificar porque es 10 aux
                     setAux(getAux() + 1);
                     setSnakeVelocity(getSnakeVelocity() - 10);
                     increaseDecreasedSpeed(gc, timeline, getSnakeVelocity(), gameScreen, gameScreenScene);
@@ -601,11 +606,16 @@ public class ScreenGameView {
                 snakeWay.removeLast();
                 snakeWay.removeLast();
                 setAppleEaten(getAppleEaten() - 1);
-            } else if (newHead[0] == banana.getFood()[0] && newHead[1] == banana.getFood()[1]) {
-                banana.getPositions().clear();
-                banana.generateFruit();
-                setSnakeVelocity(getSnakeVelocity() + 10);
-                increaseDecreasedSpeed(gc, timeline, getSnakeVelocity(), gameScreen, gameScreenScene);
+            } else if (getLevel() >= 10) {
+                if (newHead[0] == banana.getFood()[0] && newHead[1] == banana.getFood()[1]) {
+                    System.out.println("x: " + banana.getFood()[0] + ", y: " + banana.getFood()[1]);
+                    banana.getPositions().clear();
+                    banana.generateFruit();
+                    System.out.println("x: " + banana.getFood()[0] + ", y: " + banana.getFood()[1]);
+                    setSnakeVelocity(getSnakeVelocity() + 10);
+                    increaseDecreasedSpeed(gc, timeline, getSnakeVelocity(), gameScreen, gameScreenScene);
+                } else
+                    snakeWay.removeLast();
             } else
                 snakeWay.removeLast();
         } else {
@@ -616,6 +626,7 @@ public class ScreenGameView {
     private void setNewLevelToClasses() {
         apple.setLevelGame(getLevel());
         rottenApple.setLevelGame(getLevel());
+        banana.setLevelGame(getLevel());
     }
 
     private void setSettingsToGame() {
