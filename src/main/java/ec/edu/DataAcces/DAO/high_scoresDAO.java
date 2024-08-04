@@ -23,12 +23,13 @@ public class high_scoresDAO extends SQLiteDataHelper implements IDAO <high_score
 
     @Override
     public boolean create(high_scoresDTO entity) throws Exception {
-        String query = "INSERT INTO high_scores (player_name,score)VALUES (?,?)";
+        String query = "INSERT INTO high_scores (player_name, score, survived_time) VALUES (?,?,?)";
         try {
             PreparedStatement pstm = conn.prepareStatement(query);
             if(entity.getPlayer_name()!= null){
                 pstm.setString(1, entity.getPlayer_name());
                 pstm.setInt(2, entity.getScore());
+                pstm.setString(3, entity.getSurvived_time());
                 pstm.executeUpdate();
                 return true ;
             }

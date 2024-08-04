@@ -11,7 +11,6 @@ public abstract class SQLiteDataHelper {
           try {
             if (conn == null) {
                 conn = DriverManager.getConnection(DBPhatConnection);
-                System.out.println("conecto");
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
