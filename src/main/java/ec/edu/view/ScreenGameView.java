@@ -6,6 +6,7 @@ import ec.edu.KeyDirections;
 import ec.edu.edibleitems.classes.Apple;
 import ec.edu.edibleitems.classes.Orange;
 import ec.edu.edibleitems.classes.RottenApple;
+import ec.edu.player.MusicPlayer;
 import ec.edu.player.PlayerGame;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -59,7 +60,7 @@ public class ScreenGameView {
     private Apple apple = new Apple();
     private RottenApple rottenApple = new RottenApple();
     private Orange orange = new Orange();
-
+    private MusicPlayer mp;
     private Color[] colorHeadSnake = new Color[] {
             Color.web("#228B22"), // Verde Bosque
             Color.web("#32CD32"), // Verde Lima
@@ -103,6 +104,7 @@ public class ScreenGameView {
     public ScreenGameView() {
         setSettingsToGame();
         player = new PlayerGame(null, getScore());
+        mp = new MusicPlayer();
     }
 
     // Getters & Setters
@@ -305,6 +307,11 @@ public class ScreenGameView {
     }
 
     private void menu(Stage gameScreen) {
+
+        mp = new MusicPlayer();
+        mp.initialize(null, null);
+        mp.playMedia();
+
         gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 25);
         Group root = new Group();
         Scene menu = new Scene(root, SCREENCANVASWIDTH, SCREENHEIGHT, Color.GREENYELLOW);
@@ -488,6 +495,12 @@ public class ScreenGameView {
     }
 
     private void gameScreenSnake(Stage gameScreen) {
+        if (!isPaused) {
+            mp.stopMedia();
+            mp.setSongNumber(2);
+            mp.initialize(null, null);
+            mp.playMedia();
+        }
         Canvas gameZone = new Canvas(SCREENCANVASWIDTH, SCREENHEIGHT);
         GraphicsContext gc = gameZone.getGraphicsContext2D();
         StackPane root = new StackPane(gameZone);
@@ -499,12 +512,6 @@ public class ScreenGameView {
         gameZone.relocate(0, 0);
 
         gameScreenScene.setOnKeyPressed(event -> {
-
-            /*
-             * TODO: Implementar bananas en el juego y revisar que cuando se aplaste arriba
-             * y a la derecha o a la izquierda no genere problema.
-             */
-
             if (event.getCode() == KeyCode.UP && direction != KeyDirections.DOWN) {
                 direction = KeyDirections.UP;
                 setPressedTimes(getPressedTimes() + 1);
@@ -524,6 +531,7 @@ public class ScreenGameView {
 
         startGame();
         timeline.play();
+
     }
 
     private void startGame() {
@@ -533,14 +541,15 @@ public class ScreenGameView {
             snakeWay.add(new int[] { 22 / 2, (22 / 2) - 1 });
             chronometer = new Chronometer();
             chronometer.initChronometer();
+            mp.resetMedia();
         }
     }
 
     private void run(GraphicsContext gc, Timeline timeline, Stage gameScreen, Scene gameScreenScene) {
         if (!getRunning()) {
+            mp.stopMedia();
 
             gc.clearRect(20, 0, SCREENCANVASWIDTH - 40, SCREENHEIGHT - 80);
-
             gc.setFill(Color.RED);
             gc.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 33));
             gc.fillText("Game Over", SCREENCANVASWIDTH / 2 - 140, SCREENHEIGHT / 2 - 50);
@@ -583,7 +592,7 @@ public class ScreenGameView {
     }
 
     private void waitingMode(Stage gameScreen, GraphicsContext gc, Scene gameScreenScene, Timeline timeline) {
-
+        mp.pauseMedia();
         timeline.stop();
         gc.clearRect(20, 0, SCREENCANVASWIDTH - 40, SCREENHEIGHT - 80);
         gc.setFill(Color.RED);
@@ -599,12 +608,18 @@ public class ScreenGameView {
                 chronometer.resumeChronometer();
                 isPaused = true;
                 gameScreenSnake(gameScreen);
+                mp.playMedia(); 
             }
         });
 
     }
 
     private void showMenuAfterGame(Stage gameScreen, GraphicsContext gc, Scene gameScreenScene) {
+        mp.stopMedia();
+        mp.setSongNumber(1);
+        mp.initialize(null, null);
+        mp.playMedia();
+
         gc.setFill(Color.RED);
         gc.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 15));
         gc.fillText("Presione ENTER para regresar al menú", SCREENCANVASWIDTH / 2 - 250, SCREENHEIGHT / 2 - 10);
