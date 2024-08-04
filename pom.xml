@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ec.edu.epn</groupId>
@@ -15,30 +15,18 @@
     </properties>
 
     <repositories>
-         <repository>
-            <snapshots>
-               <enabled>false</enabled>
-            </snapshots>
+        <repository>
             <id>central</id>
-         <name>bintray</name>
-         <url>https://jcenter.bintray.com</url>
-    </repository>
-    <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
+            <url>https://repo.maven.apache.org/maven2</url>
         </repository>
     </repositories>
+    
 
     <dependencies>
         <dependency>
-             <groupId>com.github.WilliamAHartman</groupId>
-             <artifactId>Jamepad</artifactId>
-             <version>1.4.0</version>
-        </dependency>
-        <dependency>
-             <groupId>uk.co.electronstudio.sdl2gdx</groupId>
-             <artifactId>sdl2gdx</artifactId>
-             <version>1.0.4</version>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>17.0.11</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -62,17 +50,17 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-            <dependency>
-        <groupId>net.java.jinput</groupId>
-        <artifactId>jinput</artifactId>
-        <version>2.0.10</version>
-    </dependency>
-    <dependency>
-        <groupId>net.java.jinput</groupId>
-        <artifactId>jinput</artifactId>
-        <version>2.0.10</version>
-        <classifier>natives-all</classifier>
-    </dependency>
+        <dependency>
+            <groupId>net.java.jinput</groupId>
+            <artifactId>jinput</artifactId>
+            <version>2.0.10</version>
+        </dependency>
+        <dependency>
+            <groupId>net.java.jinput</groupId>
+            <artifactId>jinput</artifactId>
+            <version>2.0.10</version>
+            <classifier>natives-all</classifier>
+        </dependency>
     </dependencies>
 
     <build>
@@ -86,10 +74,10 @@
                     <target>22</target>
                 </configuration>
             </plugin>
-               <plugin>
-        <groupId>com.googlecode.mavennatives</groupId>
-        <artifactId>maven-nativedependencies-plugin</artifactId>
-    </plugin>
+            <plugin>
+                <groupId>com.googlecode.mavennatives</groupId>
+                <artifactId>maven-nativedependencies-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
@@ -99,7 +87,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>ec.edu.epn.snakegame/ec.edu.epn.snakegame.HelloApplication</mainClass>
+                            <mainClass>ec.edu.epn.snakegame/ec.edu.epn.snakegame.Main</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

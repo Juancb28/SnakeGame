@@ -8,9 +8,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
-
-import com.studiohartman.jamepad.ControllerManager;
-
 import ec.edu.view.ScreenGameView;
 
 public class Main extends Application {
@@ -26,22 +23,14 @@ public class Main extends Application {
                 Color.GREENYELLOW);
 
         image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/SNAKE_GAME.png")));
-        ControllerManager controllers = new ControllerManager();
-        controllers.initSDLGamepad();
-        // Set icon to app
         gameScreen.getIcons().add(image);
-
-        // Set name to app
         gameScreen.setTitle("SnakeGame®");
-
-        // Set stage to a specific size
         gameScreen.setResizable(false);
         gameScreen.setWidth(800);
         gameScreen.setHeight(600);
         gameScreen.centerOnScreen();
         gameScreen.show();
         sg.initialScreenGame(gameScreen, initialScreenComponents, intialScreenScene);
-
     }
 
     public static void main(String[] args) {
