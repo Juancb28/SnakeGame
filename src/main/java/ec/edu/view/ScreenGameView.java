@@ -9,8 +9,12 @@ import ec.edu.DataAcces.DTO.high_scoresDTO;
 import ec.edu.edibleitems.classes.Apple;
 import ec.edu.edibleitems.classes.Orange;
 import ec.edu.edibleitems.classes.RottenApple;
+import ec.edu.edibleitems.classes.bronzeMedal;
+import ec.edu.edibleitems.classes.goldMedal;
+import ec.edu.edibleitems.classes.silverMedal;
 import ec.edu.player.MusicPlayer;
 import ec.edu.player.PlayerGame;
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
@@ -64,6 +68,9 @@ public class ScreenGameView {
     private Apple apple = new Apple();
     private RottenApple rottenApple = new RottenApple();
     private Orange orange = new Orange();
+    private goldMedal goldMedal = new goldMedal();
+    private silverMedal silverMedal = new silverMedal();
+    private bronzeMedal bronzeMedal = new bronzeMedal();
     private MusicPlayer mp;
     private high_scoresDTO playerDTO;
     private boolean isMusicPlaying;
@@ -459,36 +466,100 @@ public class ScreenGameView {
         high_scoresBL hScoresBL = new high_scoresBL();
         List<high_scoresDTO> listBls = hScoresBL.getAll();
         listBls.sort((o1, o2) -> o2.getScore() - o1.getScore());
-        int aux = 50;
+        int aux = 80;
         Group root = new Group();
         Scene scene = new Scene(root, 450, 150, Color.GREENYELLOW);
         gameScreen.setScene(scene);
         gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 20);
         Text text = new Text();
-        text.setX(240);
+        text.setX(300);
         text.setY(35);
         text.setFont(gameFont);
         text.setText("Best Scores");
-        text.setFill(Color.BLACK);
+        text.setFill(Color.TOMATO);
 
         Text text2 = new Text();
-        text2.setX(115);
-        text2.setY(65);
+        text2.setX(80);
+        text2.setY(100);
         text2.setFont(gameFont);
-        text2.setText("Name" + "     " + "Score" + "   " + " Survival Time");
-        text2.setFill(Color.BLACK);
-        root.getChildren().add(text);
-        root.getChildren().add(text2);
+        text2.setText("Name");
+        text2.setFill(Color.TOMATO);
+
+        Text text3 = new Text();
+        text3.setX(260);
+        text3.setY(100);
+        text3.setFont(gameFont);
+        text3.setText( "Score");
+        text3.setFill(Color.TOMATO);
+        Text text4 = new Text();
+        text4.setX(430);
+        text4.setY(100);
+        text4.setFont(gameFont);
+        text4.setText( "Survival Time");
+        text4.setFill(Color.TOMATO);
+
+        ImageView img = new ImageView(new Image(goldMedal.getPathImage()));
+        img.setFitHeight(30);
+        img.setFitWidth(30);
+        img.setX(50);
+        img.setY(115);
+
+        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), img);
+        fadeTransition.setFromValue(1.0); // Opacidad inicial (completamente visible)
+        fadeTransition.setToValue(0.0);   // Opacidad final (completamente invisible)
+        fadeTransition.setCycleCount(FadeTransition.INDEFINITE); // Repetir indefinidamente
+        fadeTransition.setAutoReverse(true); // Invertir la animación (desaparecer y luego aparecer)
+        fadeTransition.play();
+
+        
+        ImageView imge2 = new ImageView(new Image(silverMedal.getPathImage()));
+        imge2.setFitHeight(35);
+        imge2.setFitWidth(38);
+        imge2.setX(45);
+        imge2.setY(155);
+        FadeTransition fadeTransition1 = new FadeTransition(Duration.seconds(2), imge2);
+        fadeTransition1.setFromValue(1.0); // Opacidad inicial (completamente visible)
+        fadeTransition1.setToValue(0.0);   // Opacidad final (completamente invisible)
+        fadeTransition1.setCycleCount(FadeTransition.INDEFINITE); // Repetir indefinidamente
+        fadeTransition1.setAutoReverse(true); // Invertir la animación (desaparecer y luego aparecer)
+        fadeTransition1.play();
+        
+        ImageView img3 = new ImageView(new Image(bronzeMedal.getPathImage()));
+        img3.setFitHeight(30);
+        img3.setFitWidth(30);
+        img3.setX(50);
+        img3.setY(190);
+        FadeTransition fadeTransition2 = new FadeTransition(Duration.seconds(2), img3);
+        fadeTransition2.setFromValue(1.0); // Opacidad inicial (completamente visible)
+        fadeTransition2.setToValue(0.0);   // Opacidad final (completamente invisible)
+        fadeTransition2.setCycleCount(FadeTransition.INDEFINITE); // Repetir indefinidamente
+        fadeTransition2.setAutoReverse(true); // Invertir la animación (desaparecer y luego aparecer)
+        fadeTransition2.play();
+        root.getChildren().addAll(text, text2, text3, text4, img, img3, imge2);
+        
+
         for (int i = 0; i < (listBls.size() < 5 ? listBls.size() : 5); i++) {
             Text text1 = new Text();
-            text1.setX(115);
+            text1.setX(80);
             text1.setY(aux + 55);
             text1.setFont(gameFont);
-            text1.setText(listBls.get(i).getPlayer_name() + "  " + listBls.get(i).getScore() + "      "
-                    + listBls.get(i).getSurvived_time());
+            text1.setText(listBls.get(i).getPlayer_name());
             text1.setFill(Color.BLACK);
-            root.getChildren().add(text1);
-            aux += 20;
+            Text text5 = new Text();
+            text5.setX(260);
+            text5.setY(aux+55);
+            text5.setFont(gameFont);
+            text5.setText(""+listBls.get(i).getScore());
+            text5.setFill(Color.BLACK);
+            Text text6 = new Text();
+            text6.setX(430);
+            text6.setY(aux+55);
+            text6.setFont(gameFont);
+            text6.setText( listBls.get(i).getSurvived_time());
+            text6.setFill(Color.BLACK);
+
+            root.getChildren().addAll(text1,text5,text6);
+            aux += 40;
         }
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
