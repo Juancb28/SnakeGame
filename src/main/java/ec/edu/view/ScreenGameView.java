@@ -1,7 +1,5 @@
 package ec.edu.view;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -23,7 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label; 
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -43,7 +41,7 @@ import utils.Chronometer;
 public class ScreenGameView {
 
     // Attributes
-    private high_scoresBL hBl ;
+    private high_scoresBL hBl;
     private Chronometer chronometer;
     private Boolean running = true;
     private Boolean isPaused = false;
@@ -67,6 +65,9 @@ public class ScreenGameView {
     private RottenApple rottenApple = new RottenApple();
     private Orange orange = new Orange();
     private MusicPlayer mp;
+    private high_scoresDTO playerDTO;
+    private boolean isMusicPlaying;
+
     private Color[] colorHeadSnake = new Color[] {
             Color.web("#228B22"), // Verde Bosque
             Color.web("#32CD32"), // Verde Lima
@@ -111,9 +112,18 @@ public class ScreenGameView {
         setSettingsToGame();
         player = new PlayerGame(null, getScore());
         mp = new MusicPlayer();
+        setMusicPlaying(false);
     }
 
     // Getters & Setters
+    public boolean isMusicPlaying() {
+        return isMusicPlaying;
+    }
+
+    public void setMusicPlaying(boolean isMusicPlaying) {
+        this.isMusicPlaying = isMusicPlaying;
+    }
+
     public String getName() {
         return name;
     }
@@ -314,9 +324,12 @@ public class ScreenGameView {
 
     private void menu(Stage gameScreen) {
 
-        mp = new MusicPlayer();
-        mp.initialize(null, null);
-        mp.playMedia();
+        if (!isMusicPlaying) {
+            mp = new MusicPlayer();
+            mp.initialize(null, null);
+            mp.playMedia();
+            setMusicPlaying(true);
+        }
 
         gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 25);
         Group root = new Group();
@@ -443,10 +456,9 @@ public class ScreenGameView {
     }
 
     private void BestScore(Stage gameScreen) throws Exception {
-        high_scoresBL hScoresBL = new high_scoresBL() ;
+        high_scoresBL hScoresBL = new high_scoresBL();
         List<high_scoresDTO> listBls = hScoresBL.getAll();
-        listBls.sort((o1,o2)->o1.getScore()-o2.getScore());
-        System.out.println("base de datos ");
+        listBls.sort((o1, o2) -> o2.getScore() - o1.getScore());
         int aux = 50;
         Group root = new Group();
         Scene scene = new Scene(root, 450, 150, Color.GREENYELLOW);
@@ -458,34 +470,33 @@ public class ScreenGameView {
         text.setFont(gameFont);
         text.setText("Best Scores");
         text.setFill(Color.BLACK);
-        
+
         Text text2 = new Text();
         text2.setX(115);
         text2.setY(65);
         text2.setFont(gameFont);
-        text2.setText("Name"+"     "+"Score"+"   "+" Survival Time");
+        text2.setText("Name" + "     " + "Score" + "   " + " Survival Time");
         text2.setFill(Color.BLACK);
         root.getChildren().add(text);
         root.getChildren().add(text2);
         for (int i = 0; i < (listBls.size() < 5 ? listBls.size() : 5); i++) {
-            Text text1 = new Text() ; 
+            Text text1 = new Text();
             text1.setX(115);
-            text1.setY(aux+55);
+            text1.setY(aux + 55);
             text1.setFont(gameFont);
-            text1.setText(listBls.get(i).getPlayer_name()+"  "+listBls.get(i).getScore()+"      "+listBls.get(i).getSurvived_time());
+            text1.setText(listBls.get(i).getPlayer_name() + "  " + listBls.get(i).getScore() + "      "
+                    + listBls.get(i).getSurvived_time());
             text1.setFill(Color.BLACK);
             root.getChildren().add(text1);
-            aux+=20;
+            aux += 20;
         }
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                menu(gameScreen); 
+                menu(gameScreen);
             }
         });
 
-      
     }
-
 
     private String enterName(Stage gameScreen) {
         Stage enterName = new Stage();
@@ -514,14 +525,15 @@ public class ScreenGameView {
         name.setLayoutY(40);
         name.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                player.setNamePlayer(name.getText());
-                System.out.println("Entered Name: " + player.getNamePlayer());
+                playerDTO = new high_scoresDTO(name.getText(), 0, "");
+                // player.setNamePlayer(name.getText());
                 if (!name.getText().isEmpty() && !name.getText().isBlank()) {
                     setPlayer(new PlayerGame(name.getText(), 0));
                     enterName.close();
                     setSettingsToGame();
                     gameScreenSnake(gameScreen);
                 }
+                name.setText(null);
             }
         });
 
@@ -549,6 +561,7 @@ public class ScreenGameView {
 
     private void gameScreenSnake(Stage gameScreen) {
         if (!isPaused) {
+            setMusicPlaying(false);
             mp.stopMedia();
             mp.setSongNumber(2);
             mp.initialize(null, null);
@@ -630,11 +643,12 @@ public class ScreenGameView {
 
             isPaused = false;
 
-            hBl= new high_scoresBL();
-            high_scoresDTO hScoresDTO = new high_scoresDTO();
-            hScoresDTO.setPlayer_name(getName());
-            hScoresDTO.setScore(getScore());
-            hBl.create(new high_scoresDTO(getName(),getScore(),timeline.getCurrentTime().toString()));
+            if (playerDTO.getPlayer_name() != null) {
+                hBl = new high_scoresBL();
+                playerDTO.setScore(player.getScore());
+                playerDTO.setSurvived_time(chronometer.getMinutes() + ":" + chronometer.getSeconds());
+                hBl.create(playerDTO);
+            }
             timeline.stop();
             return;
         }
@@ -671,7 +685,7 @@ public class ScreenGameView {
                 chronometer.resumeChronometer();
                 isPaused = true;
                 gameScreenSnake(gameScreen);
-                mp.playMedia(); 
+                mp.playMedia();
             }
         });
 
