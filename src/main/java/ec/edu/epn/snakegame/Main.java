@@ -23,7 +23,6 @@ public class Main extends Application {
                 Color.GREENYELLOW);
 
         image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/SNAKE_GAME.png")));
-
         gameScreen.getIcons().add(image);
         gameScreen.setTitle("SnakeGame®");
         gameScreen.setResizable(false);
