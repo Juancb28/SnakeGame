@@ -1,8 +1,13 @@
 package ec.edu.view;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 import ec.edu.KeyDirections;
+import ec.edu.BusinessLogic.high_scoresBL;
+import ec.edu.DataAcces.DTO.high_scoresDTO;
 import ec.edu.edibleitems.classes.Apple;
 import ec.edu.edibleitems.classes.Orange;
 import ec.edu.edibleitems.classes.RottenApple;
@@ -38,6 +43,7 @@ import utils.Chronometer;
 public class ScreenGameView {
 
     // Attributes
+    private high_scoresBL hBl ;
     private Chronometer chronometer;
     private Boolean running = true;
     private Boolean isPaused = false;
@@ -371,7 +377,13 @@ public class ScreenGameView {
         newBestScoreButton.setFont(gameFont);
         newBestScoreButton.setText("Best Score");
         newBestScoreButton.setBackground(background);
-        newBestScoreButton.setOnAction(event -> BestScore());
+        newBestScoreButton.setOnAction(event -> {
+            try {
+                BestScore(gameScreen);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
         newExitGameButton.setLayoutX(250);
         newExitGameButton.setLayoutY(275);
@@ -430,9 +442,50 @@ public class ScreenGameView {
         System.exit(0);
     }
 
-    private void BestScore() {
+    private void BestScore(Stage gameScreen) throws Exception {
+        high_scoresBL hScoresBL = new high_scoresBL() ;
+        List<high_scoresDTO> listBls = hScoresBL.getAll();
+        listBls.sort((o1,o2)->o1.getScore()-o2.getScore());
         System.out.println("base de datos ");
+        int aux = 50;
+        Group root = new Group();
+        Scene scene = new Scene(root, 450, 150, Color.GREENYELLOW);
+        gameScreen.setScene(scene);
+        gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 20);
+        Text text = new Text();
+        text.setX(240);
+        text.setY(35);
+        text.setFont(gameFont);
+        text.setText("Best Scores");
+        text.setFill(Color.BLACK);
+        
+        Text text2 = new Text();
+        text2.setX(115);
+        text2.setY(65);
+        text2.setFont(gameFont);
+        text2.setText("Name"+"     "+"Score"+"   "+" Survival Time");
+        text2.setFill(Color.BLACK);
+        root.getChildren().add(text);
+        root.getChildren().add(text2);
+        for (int i = 0; i < (listBls.size() < 5 ? listBls.size() : 5); i++) {
+            Text text1 = new Text() ; 
+            text1.setX(115);
+            text1.setY(aux+55);
+            text1.setFont(gameFont);
+            text1.setText(listBls.get(i).getPlayer_name()+"  "+listBls.get(i).getScore()+"      "+listBls.get(i).getSurvived_time());
+            text1.setFill(Color.BLACK);
+            root.getChildren().add(text1);
+            aux+=20;
+        }
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                menu(gameScreen); 
+            }
+        });
+
+      
     }
+
 
     private String enterName(Stage gameScreen) {
         Stage enterName = new Stage();
@@ -505,9 +558,14 @@ public class ScreenGameView {
         GraphicsContext gc = gameZone.getGraphicsContext2D();
         StackPane root = new StackPane(gameZone);
         Scene gameScreenScene = new Scene(root, SCREENCANVASWIDTH, SCREENHEIGHT);
-        // setSettingsToGame();
         timeline = new Timeline(
-                new KeyFrame(Duration.millis(getSnakeVelocity()), e -> run(gc, timeline, gameScreen, gameScreenScene)));
+                new KeyFrame(Duration.millis(getSnakeVelocity()), e -> {
+                    try {
+                        run(gc, timeline, gameScreen, gameScreenScene);
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         gameZone.relocate(0, 0);
 
@@ -545,7 +603,7 @@ public class ScreenGameView {
         }
     }
 
-    private void run(GraphicsContext gc, Timeline timeline, Stage gameScreen, Scene gameScreenScene) {
+    private void run(GraphicsContext gc, Timeline timeline, Stage gameScreen, Scene gameScreenScene) throws Exception {
         if (!getRunning()) {
             mp.stopMedia();
 
@@ -572,6 +630,11 @@ public class ScreenGameView {
 
             isPaused = false;
 
+            hBl= new high_scoresBL();
+            high_scoresDTO hScoresDTO = new high_scoresDTO();
+            hScoresDTO.setPlayer_name(getName());
+            hScoresDTO.setScore(getScore());
+            hBl.create(new high_scoresDTO(getName(),getScore(),timeline.getCurrentTime().toString()));
             timeline.stop();
             return;
         }
@@ -723,10 +786,22 @@ public class ScreenGameView {
         timeline.stop();
         if (newSpeedMillis > 200) {
             keyFrame = new KeyFrame(Duration.millis(200),
-                    e -> run(gc, timeline, gameScreen, gameScreenScene));
+                    e -> {
+                        try {
+                            run(gc, timeline, gameScreen, gameScreenScene);
+                        } catch (Exception e1) {
+                            e1.printStackTrace();
+                        }
+                    });
         } else {
             keyFrame = new KeyFrame(Duration.millis(newSpeedMillis),
-                    e -> run(gc, timeline, gameScreen, gameScreenScene));
+                    e -> {
+                        try {
+                            run(gc, timeline, gameScreen, gameScreenScene);
+                        } catch (Exception e1) {
+                            e1.printStackTrace();
+                        }
+                    });
         }
         timeline.getKeyFrames().setAll(keyFrame);
         timeline.play();
