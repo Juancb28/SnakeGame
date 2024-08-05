@@ -1,6 +1,5 @@
 -- database: ../database/data.sqlite
 
-DELETE FROM high_scores ;
 DROP TABLE IF EXISTS high_scores;
 CREATE TABLE high_scores (
     id                          INTEGER PRIMARY KEY AUTOINCREMENT,

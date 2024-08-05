@@ -489,13 +489,13 @@ public class ScreenGameView {
         text3.setX(260);
         text3.setY(100);
         text3.setFont(gameFont);
-        text3.setText( "Score");
+        text3.setText("Score");
         text3.setFill(Color.TOMATO);
         Text text4 = new Text();
         text4.setX(430);
         text4.setY(100);
         text4.setFont(gameFont);
-        text4.setText( "Survival Time");
+        text4.setText("Survival Time");
         text4.setFill(Color.TOMATO);
 
         ImageView img = new ImageView(new Image(goldMedal.getPathImage()));
@@ -506,12 +506,11 @@ public class ScreenGameView {
 
         FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), img);
         fadeTransition.setFromValue(1.0); // Opacidad inicial (completamente visible)
-        fadeTransition.setToValue(0.0);   // Opacidad final (completamente invisible)
+        fadeTransition.setToValue(0.0); // Opacidad final (completamente invisible)
         fadeTransition.setCycleCount(FadeTransition.INDEFINITE); // Repetir indefinidamente
         fadeTransition.setAutoReverse(true); // Invertir la animación (desaparecer y luego aparecer)
         fadeTransition.play();
 
-        
         ImageView imge2 = new ImageView(new Image(silverMedal.getPathImage()));
         imge2.setFitHeight(35);
         imge2.setFitWidth(38);
@@ -519,11 +518,11 @@ public class ScreenGameView {
         imge2.setY(155);
         FadeTransition fadeTransition1 = new FadeTransition(Duration.seconds(2), imge2);
         fadeTransition1.setFromValue(1.0); // Opacidad inicial (completamente visible)
-        fadeTransition1.setToValue(0.0);   // Opacidad final (completamente invisible)
+        fadeTransition1.setToValue(0.0); // Opacidad final (completamente invisible)
         fadeTransition1.setCycleCount(FadeTransition.INDEFINITE); // Repetir indefinidamente
         fadeTransition1.setAutoReverse(true); // Invertir la animación (desaparecer y luego aparecer)
         fadeTransition1.play();
-        
+
         ImageView img3 = new ImageView(new Image(bronzeMedal.getPathImage()));
         img3.setFitHeight(30);
         img3.setFitWidth(30);
@@ -531,12 +530,11 @@ public class ScreenGameView {
         img3.setY(190);
         FadeTransition fadeTransition2 = new FadeTransition(Duration.seconds(2), img3);
         fadeTransition2.setFromValue(1.0); // Opacidad inicial (completamente visible)
-        fadeTransition2.setToValue(0.0);   // Opacidad final (completamente invisible)
+        fadeTransition2.setToValue(0.0); // Opacidad final (completamente invisible)
         fadeTransition2.setCycleCount(FadeTransition.INDEFINITE); // Repetir indefinidamente
         fadeTransition2.setAutoReverse(true); // Invertir la animación (desaparecer y luego aparecer)
         fadeTransition2.play();
         root.getChildren().addAll(text, text2, text3, text4, img, img3, imge2);
-        
 
         for (int i = 0; i < (listBls.size() < 5 ? listBls.size() : 5); i++) {
             Text text1 = new Text();
@@ -547,18 +545,18 @@ public class ScreenGameView {
             text1.setFill(Color.BLACK);
             Text text5 = new Text();
             text5.setX(260);
-            text5.setY(aux+55);
+            text5.setY(aux + 55);
             text5.setFont(gameFont);
-            text5.setText(""+listBls.get(i).getScore());
+            text5.setText("" + listBls.get(i).getScore());
             text5.setFill(Color.BLACK);
             Text text6 = new Text();
             text6.setX(430);
-            text6.setY(aux+55);
+            text6.setY(aux + 55);
             text6.setFont(gameFont);
-            text6.setText( listBls.get(i).getSurvived_time());
+            text6.setText(listBls.get(i).getSurvived_time());
             text6.setFill(Color.BLACK);
 
-            root.getChildren().addAll(text1,text5,text6);
+            root.getChildren().addAll(text1, text5, text6);
             aux += 40;
         }
         scene.setOnKeyPressed(event -> {
@@ -618,6 +616,7 @@ public class ScreenGameView {
         anonymous.setOnAction(event -> {
             player.setNamePlayer("anonymous");
             setPlayer(new PlayerGame("anonymous", 0));
+            playerDTO = new high_scoresDTO(null, 0, null);
             enterName.close();
             setSettingsToGame();
             gameScreenSnake(gameScreen);
@@ -717,7 +716,9 @@ public class ScreenGameView {
             if (playerDTO.getPlayer_name() != null) {
                 hBl = new high_scoresBL();
                 playerDTO.setScore(player.getScore());
-                playerDTO.setSurvived_time(chronometer.getMinutes() + ":" + chronometer.getSeconds());
+
+                playerDTO.setSurvived_time(chronometer.getChronometer());
+
                 hBl.create(playerDTO);
             }
             timeline.stop();
