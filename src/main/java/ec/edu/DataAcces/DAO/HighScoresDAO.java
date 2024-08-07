@@ -35,7 +35,6 @@ import ec.edu.DataAcces.DTO.HighScoresDTO;
         }
     }
 
-<<<<<<< HEAD
     // TODO
     /**
      * Crea un nuevo registro en la tabla HighScores.
@@ -44,8 +43,6 @@ import ec.edu.DataAcces.DTO.HighScoresDTO;
      * @return true si el registro se insertó correctamente, false en caso contrario.
      * @throws Exception Si ocurre un error durante la operación.
      */
-=======
->>>>>>> main
     @Override
     public boolean create(HighScoresDTO entity) throws Exception {
         String query = "INSERT INTO HighScores (player_name, score, survived_time) VALUES (?,?,?)";
