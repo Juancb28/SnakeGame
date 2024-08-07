@@ -9,8 +9,8 @@
         -Description : create snakegame entity structures
 \..............................................................*/
 
-DROP TABLE IF EXISTS high_scores;
-CREATE TABLE high_scores (
+DROP TABLE IF EXISTS HighScores;
+CREATE TABLE HighScores (
     id                          INTEGER     PRIMARY KEY AUTOINCREMENT,
     player_name                 TEXT        NOT NULL,
     score                       INTEGER     NOT NULL,

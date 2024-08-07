@@ -35,7 +35,6 @@ import ec.edu.DataAcces.DTO.HighScoresDTO;
         }
     }
 
-    // TODO
     /**
      * Crea un nuevo registro en la tabla HighScores.
      * 
@@ -71,7 +70,7 @@ import ec.edu.DataAcces.DTO.HighScoresDTO;
     public List<HighScoresDTO> readAll() throws Exception {
         List<HighScoresDTO> lst = new ArrayList<>(0);
         String query = "SELECT           "
-                        +"idHighScores                        "     
+                        +"id                         "     
                         +",player_name               "     
                         +",score                     "     
                         +",survived_time             "     
