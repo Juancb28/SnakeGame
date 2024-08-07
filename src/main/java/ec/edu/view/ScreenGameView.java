@@ -42,6 +42,10 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import utils.Chronometer;
 
+/**
+ * Shows initial, menu and game screen. Also check rules,
+ * create userInterface.
+ */
 public class ScreenGameView {
 
     // Attributes
