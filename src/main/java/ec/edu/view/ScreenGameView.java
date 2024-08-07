@@ -212,7 +212,14 @@ public class ScreenGameView {
     public void setPlayer(PlayerGame player) {
         this.player = player;
     }
-
+/**
+This method sets the font, loads and displays images, 
+creates and configures graphical components such as text and rectangles, 
+and defines the behavior of keyboard events to initiate.
+ * @param gameScreen
+ * @param initialScreenComponents
+ * @param intialScreenScene
+ */
     public void initialScreenGame(Stage gameScreen, Group initialScreenComponents,
             Scene intialScreenScene) {
 
@@ -328,7 +335,14 @@ public class ScreenGameView {
     private void addInitialScreenComponents(Group initialScreenComponents, Node... nodes) {
         initialScreenComponents.getChildren().addAll(nodes);
     }
-
+/**
+ * This method sets the main menu scene on the provided {@link Stage},
+ * including the graphical interface settings, navigation buttons, and background music.
+ * Plays background music if it is not already playing.
+ * Creates and configures the menu's visual elements, such as buttons and text.
+ * Configures animations for certain graphical elements in the menu.
+ * @param gameScreen
+ */
     private void menu(Stage gameScreen) {
 
         if (!isMusicPlaying) {
@@ -449,18 +463,27 @@ public class ScreenGameView {
         gameScreen.setScene(menu);
         gameScreen.show();
 
-        root.getChildren().add(imageMenu);
-        root.getChildren().add(newGameButton);
-        root.getChildren().add(newExitGameButton);
-        root.getChildren().add(newBestScoreButton);
-        root.getChildren().add(text1);
+        root.getChildren().addAll(imageMenu,newGameButton,newExitGameButton,newBestScoreButton,text1);
         addInitialScreenComponents(root, rectangle, rectangle1, rectangle2, rectangle3);
 
     }
-
+/**
+ * Close the application immediately
+ */
     private void exitGam() {
         System.exit(0);
     }
+    /**
+     * Display the high scores screen. This method sets up and displays 
+     * a scene that presents the high scores in the game.
+     * It includes displaying the high scores along with animated medals for the top three places.
+     * Loads and sorts the high scores from a data source.
+     * Creates and configures graphical elements such as text and animated medals.
+     * Adds player scores and names to the scene, limiting the display to the top five. 
+     * Sets an action to return to the main menu when the Enter key is pressed.
+     * @param gameScreen
+     * @throws Exception
+     */
 
     private void BestScore(Stage gameScreen) throws Exception {
         HighScoresBL hScoresBL = new HighScoresBL();
@@ -566,7 +589,16 @@ public class ScreenGameView {
         });
 
     }
-
+/**
+ * Displays a dialog box for the player to enter their name.
+ * This method creates and displays a new window where the player can enter their name.
+ * It gives the player two options:
+ * Enter a name and press Enter to continue the game.
+ * Select an option to play anonymously. The method configures the player 
+ * and closes the input window, then proceeds to configure the game and display the game screen.
+ * @param gameScreen
+ * @return
+ */
     private String enterName(Stage gameScreen) {
         Stage enterName = new Stage();
         enterName.getIcons().add(gameScreen.getIcons().getFirst());
