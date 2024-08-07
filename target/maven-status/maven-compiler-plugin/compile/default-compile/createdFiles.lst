@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+ec\edu\view\ScreenGameView$1.class
+=======
 ec\edu\DataAcces\DTO\HighScoresDTO.class
 ec\edu\edibleitems\classes\SilverMedal.class
 utils\Chronometer.class
@@ -20,3 +23,4 @@ ec\edu\player\MusicPlayer.class
 ec\edu\epn\snakegame\Main.class
 utils\Chronometer$1.class
 ec\edu\DataAcces\DAO\SQLiteDataHelper.class
+>>>>>>> 0730c2d21303fd58e851679c6e14710f6d0acb6c

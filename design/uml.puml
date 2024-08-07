@@ -1,0 +1,139 @@
+@startuml name
+package "ec.edu" {
+  rectangle KeyDirections {
+    +UP
+    +DOWN
+    +LEFT
+    +RIGHT
+  }
+}
+
+package "utils" {
+  rectangle Chronometer {
+    -int seconds
+    -Timer timer
+    -int minutes
+    -int leftSeconds
+    +Chronometer()
+    +int getSeconds()
+    +void setSeconds(int seconds)
+    +int getMinutes()
+    +void setMinutes(int minutes)
+    +int getLeftSeconds()
+    +void setLeftSeconds(int leftSeconds)
+    +void initChronometer()
+    +String getChronometer()
+    +void stopChronometer()
+    +void resetChronometer()
+  }
+}
+
+package "ec.edu.player" {
+  rectangle PlayerGame {
+    -String namePlayer
+    -int score
+    +PlayerGame(String name, int score)
+    +String getNamePlayer()
+    +void setNamePlayer(String namePlayer)
+    +int getScore()
+    +void setScore(int score)
+    +void calculateScore(int getPressedTimes)
+  }
+}
+
+package "ec.edu.view" {
+  rectangle ScreenGame {
+    -int[] food
+    -Chronometer chronometer
+    -Boolean running
+    -Image image
+    -ImageView ivApple
+    -final Integer SNAKEBODY
+    -final Integer SCREENCANVASWIDTH
+    -final Integer SCREENHEIGHT
+    -Font font
+    -KeyDirections direction
+    -LinkedList<int[]> snakeWay
+    -int level
+    -int appleEaten
+    -int score
+    -int aux
+    -int pressedTimes
+    -PlayerGame playerGame
+    -Color[] colorHeadSnake
+    -Color[] colorsBackground
+    -Color[] colorSnake
+    +ScreenGame()
+    +int getScore()
+    +void setScore(int score)
+    +int getPressedTimes()
+    +void setPressedTimes(int pressedTimes)
+    +int getAux()
+    +void setAux(int aux)
+    +int getAppleEaten()
+    +void setAppleEaten(int appleEaten)
+    +int getLevel()
+    +void setLevel(int level)
+    +int getScreenCanvasWidth()
+    +int getScreenHeight()
+    +void initialScreenGame(Stage gameScreen, Group initialScreenComponents, Scene intialScreenScene)
+    -void addInitialScreenComponents(Group initialScreenComponents, Node... nodes)
+    -void gameScreenSnake(Stage gameScreen)
+    -void startGame()
+    -void run(GraphicsContext gc)
+    -void moveSnake()
+    -void placeFood()
+    -void checkCollision()
+    -void draw(GraphicsContext gc)
+  }
+}
+
+package "ec.edu.epn.snakegame" {
+  rectangle Main {
+    -ScreenGame sg
+    -Image image
+    +void start(Stage gameScreen)
+  }
+}
+
+package "ec.edu.epn.player" {
+  rectangle MusicPlayer{
+    -File directory
+    -File[] files
+    -ArrayList<File> songs
+    -int songNumber
+    -Media media
+    -MediaPlayer mediaPlayer
+    +void setSongNumber
+    +void initialize(URL location, ResourceBundle resources)
+    +void changeMedia(int songNumber)
+    +void playMedia()
+    +void pauseMedia()
+    +void stopMedia()
+    +void resetMedia()
+  }
+}
+
+package "ec.edu.epn.player" {
+  rectangle MusicPlayer {
+    -File directory
+    -File[] files
+    -ArrayList<File> songs
+    -int songNumber
+    -Media media
+    -MediaPlayer mediaPlayer
+    +void setSongNumber(int songNumber)
+    +void initialize(URL location, ResourceBundle resources)
+    +void changeMedia(int songNumber)
+    +void playMedia()
+    +void pauseMedia()
+    +void stopMedia()
+    +void resetMedia()
+  }
+}
+
+
+ScreenGame --> Chronometer : uses
+ScreenGame --> PlayerGame : uses
+Main --> ScreenGame : has
+@enduml
