@@ -13,7 +13,7 @@ import java.sql.SQLException;
 
 public abstract class SQLiteDataHelper {
     //private static String DBPhatConnection = "jdbc:sqlite:database/data.sqlite";
-    private static String DBPhatConnection = "jdbc:sqlite:SnakeGame\\database\\data.sqlite";
+    private static String DBPhatConnection = "jdbc:sqlite:database/data.sqlite";
     private static Connection conn = null ;
 
      /**
