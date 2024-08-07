@@ -29,7 +29,7 @@ public class MusicPlayer implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         songs = new ArrayList<>();
-        directory = new File("src\\main\\resources\\media");
+        directory = new File("SnakeGame\\src\\main\\resources\\media");
         files = directory.listFiles();
 
         if (files != null) {
