@@ -1,4 +1,12 @@
 -- database: ../database/data.sqlite
+/*.............................................................\
+| @Copyright 2k24                                   SNAKEGAME   |
+\............................................................../
+ [App]                : SNAKEGAME
+        -Date        : 2k24,August, 05
+        -Version     : 1.0
+        -Description : create snakegame entity structures
+\..............................................................*/
 
 DROP TABLE IF EXISTS high_scores;
 CREATE TABLE high_scores (
