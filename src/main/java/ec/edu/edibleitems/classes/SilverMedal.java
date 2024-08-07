@@ -1,9 +1,9 @@
 package ec.edu.edibleitems.classes;
 import java.io.InputStream;
 import java.util.Objects;
-import ec.edu.edibleitems.abstractClasses.Fruit;
+import ec.edu.edibleitems.abstractClasses.SeeImage;
 
-public class SilverMedal extends Fruit {
+public class SilverMedal extends SeeImage {
     public SilverMedal() {
         positions.add(placeFood());
     }

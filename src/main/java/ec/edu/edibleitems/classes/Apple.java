@@ -3,9 +3,9 @@ package ec.edu.edibleitems.classes;
 import java.io.InputStream;
 import java.util.Objects;
 
-import ec.edu.edibleitems.abstractClasses.Fruit;
+import ec.edu.edibleitems.abstractClasses.SeeImage;
 
-public class Apple extends Fruit {
+public class Apple extends SeeImage {
 
     public Apple() {
         positions.add(placeFood());
