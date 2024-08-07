@@ -5,23 +5,15 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
-public abstract class Fruit {
+public abstract class SeeImage {
 
     // Attributes
     private int[] food = new int[2];
-    private int quantity;
     public ArrayList<int[]> positions = new ArrayList<>();
     private int levelGame;
 
     // Getters & Setters
-    public int getQuantity() {
-        return this.quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
+    //El método devuelve un ArrayList de arreglos de enteros 
     public ArrayList<int[]> getPositions() {
         return positions;
     }
