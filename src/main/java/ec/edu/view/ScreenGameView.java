@@ -320,7 +320,7 @@ and defines the behavior of keyboard events to initiate.
         playButton.setY(365);
         initialScreenComponents.getChildren().add(playButton);
 
-        Label instructions = new Label("Press Enter to play");
+        Label instructions = new Label("Press 'X' to play");
         instructions.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 15));
         instructions.setTextFill(Color.BLACK);
         instructions.setLayoutX(200);
@@ -491,8 +491,6 @@ and defines the behavior of keyboard events to initiate.
 
     private void BestScore(Stage gameScreen) throws Exception {
         HighScoresBL hScoresBL = new HighScoresBL();
-        List<HighScoresDTO> listBls = hScoresBL.getAll();
-        listBls.sort((o1, o2) -> o2.getScore() - o1.getScore());
         int aux = 80;
         Group root = new Group();
         Scene scene = new Scene(root, 450, 150, Color.GREENYELLOW);
@@ -563,24 +561,24 @@ and defines the behavior of keyboard events to initiate.
         fadeTransition2.play();
         root.getChildren().addAll(text, text2, text3, text4, img, img3, imge2);
 
-        for (int i = 0; i < (listBls.size() < 5 ? listBls.size() : 5); i++) {
+        for (int i = 0; i < (hScoresBL.getAll().size() < 5 ? hScoresBL.getAll().size() : 5); i++) {
             Text text1 = new Text();
             text1.setX(80);
             text1.setY(aux + 55);
             text1.setFont(gameFont);
-            text1.setText(listBls.get(i).getPlayer_name());
+            text1.setText(hScoresBL.getAll().get(i).getPlayer_name());
             text1.setFill(Color.BLACK);
             Text text5 = new Text();
             text5.setX(260);
             text5.setY(aux + 55);
             text5.setFont(gameFont);
-            text5.setText("" + listBls.get(i).getScore());
+            text5.setText("" + hScoresBL.getAll().get(i).getScore());
             text5.setFill(Color.BLACK);
             Text text6 = new Text();
             text6.setX(430);
             text6.setY(aux + 55);
             text6.setFont(gameFont);
-            text6.setText(listBls.get(i).getSurvived_time());
+            text6.setText(hScoresBL.getAll().get(i).getSurvived_time());
             text6.setFill(Color.BLACK);
 
             root.getChildren().addAll(text1, text5, text6);
@@ -827,7 +825,7 @@ and defines the behavior of keyboard events to initiate.
 
         gc.setFill(Color.RED);
         gc.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 13));
-        gc.fillText(" --> Press ENTER to resume game <--", SCREENCANVASWIDTH / 2 - 250, SCREENHEIGHT / 2 + 50);
+        gc.fillText(" --> Press 'X' to resume game <--", SCREENCANVASWIDTH / 2 - 250, SCREENHEIGHT / 2 + 50);
 
         gameScreenScene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
@@ -856,7 +854,7 @@ and defines the behavior of keyboard events to initiate.
 
         gc.setFill(Color.RED);
         gc.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 15));
-        gc.fillText("Presione ENTER para regresar al menú", SCREENCANVASWIDTH / 2 - 250, SCREENHEIGHT / 2 - 10);
+        gc.fillText("Presione 'X' para regresar al menú", SCREENCANVASWIDTH / 2 - 250, SCREENHEIGHT / 2 - 10);
         gameScreenScene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 setSettingsToGame();
