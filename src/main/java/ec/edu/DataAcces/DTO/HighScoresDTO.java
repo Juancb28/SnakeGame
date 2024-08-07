@@ -2,26 +2,26 @@ package ec.edu.DataAcces.DTO;
 
 import java.sql.Date;
 
-public class high_scoresDTO {
+public class HighScoresDTO {
 private  Integer id ;               
 private String player_name  ;     
 private Integer score ;
 private String survived_time     ;
 private Date FechaCrea         ;
 
-public high_scoresDTO(String player_name, Integer score, String survived_time) {
+public HighScoresDTO(String player_name, Integer score, String survived_time) {
     this.player_name = player_name;
     this.score = score;
     this.survived_time = survived_time;
 }
-public high_scoresDTO(Integer id, String player_name, Integer score, String survived_time, Date fechaCrea) {
+public HighScoresDTO(Integer id, String player_name, Integer score, String survived_time, Date fechaCrea) {
     this.id = id;
     this.player_name = player_name;
     this.score = score;
     this.survived_time = survived_time;
     FechaCrea = fechaCrea;
 }
-public high_scoresDTO() {
+public HighScoresDTO() {
 }
 public Integer getId() {
     return id;

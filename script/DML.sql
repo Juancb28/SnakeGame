@@ -1,4 +1,5 @@
 -- database: ../database/data.sqlite
+<<<<<<< HEAD
 /*.............................................................\
 | @Copyright 2k24                                   SNAKEGAME   |
 \............................................................../
@@ -10,6 +11,9 @@
 \..............................................................*/
 
 INSERT INTO high_scores 
+=======
+INSERT INTO HighScores 
+
  (player_name               ,score              ,survived_time  ) VALUES 
  ('Player1'                 , 100               ,1000);
  

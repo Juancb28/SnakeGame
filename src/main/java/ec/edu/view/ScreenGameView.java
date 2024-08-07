@@ -4,14 +4,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import ec.edu.KeyDirections;
-import ec.edu.BusinessLogic.high_scoresBL;
-import ec.edu.DataAcces.DTO.high_scoresDTO;
+import ec.edu.BusinessLogic.HighScoresBL;
+import ec.edu.DataAcces.DTO.HighScoresDTO;
 import ec.edu.edibleitems.classes.Apple;
 import ec.edu.edibleitems.classes.Orange;
 import ec.edu.edibleitems.classes.RottenApple;
-import ec.edu.edibleitems.classes.bronzeMedal;
-import ec.edu.edibleitems.classes.goldMedal;
-import ec.edu.edibleitems.classes.silverMedal;
+import ec.edu.edibleitems.classes.BronzeMedal;
+import ec.edu.edibleitems.classes.GoldMedal;
+import ec.edu.edibleitems.classes.SilverMedal;
 import ec.edu.player.MusicPlayer;
 import ec.edu.player.PlayerGame;
 import javafx.animation.FadeTransition;
@@ -45,7 +45,7 @@ import utils.Chronometer;
 public class ScreenGameView {
 
     // Attributes
-    private high_scoresBL hBl;
+    private HighScoresBL hBl;
     private Chronometer chronometer;
     private Boolean running = true;
     private Boolean isPaused = false;
@@ -68,11 +68,11 @@ public class ScreenGameView {
     private Apple apple = new Apple();
     private RottenApple rottenApple = new RottenApple();
     private Orange orange = new Orange();
-    private goldMedal goldMedal = new goldMedal();
-    private silverMedal silverMedal = new silverMedal();
-    private bronzeMedal bronzeMedal = new bronzeMedal();
+    private GoldMedal goldMedal = new GoldMedal();
+    private SilverMedal silverMedal = new SilverMedal();
+    private BronzeMedal bronzeMedal = new BronzeMedal();
     private MusicPlayer mp;
-    private high_scoresDTO playerDTO;
+    private HighScoresDTO playerDTO;
     private boolean isMusicPlaying;
 
     private Color[] colorHeadSnake = new Color[] {
@@ -449,11 +449,7 @@ public class ScreenGameView {
         gameScreen.setScene(menu);
         gameScreen.show();
 
-        root.getChildren().add(imageMenu);
-        root.getChildren().add(newGameButton);
-        root.getChildren().add(newExitGameButton);
-        root.getChildren().add(newBestScoreButton);
-        root.getChildren().add(text1);
+        root.getChildren().addAll(imageMenu,newGameButton,newExitGameButton,newBestScoreButton,text1);
         addInitialScreenComponents(root, rectangle, rectangle1, rectangle2, rectangle3);
 
     }
@@ -463,8 +459,8 @@ public class ScreenGameView {
     }
 
     private void BestScore(Stage gameScreen) throws Exception {
-        high_scoresBL hScoresBL = new high_scoresBL();
-        List<high_scoresDTO> listBls = hScoresBL.getAll();
+        HighScoresBL hScoresBL = new HighScoresBL();
+        List<HighScoresDTO> listBls = hScoresBL.getAll();
         listBls.sort((o1, o2) -> o2.getScore() - o1.getScore());
         int aux = 80;
         Group root = new Group();
@@ -594,7 +590,7 @@ public class ScreenGameView {
         name.setLayoutY(40);
         name.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                playerDTO = new high_scoresDTO(name.getText(), 0, "");
+                playerDTO = new HighScoresDTO(name.getText(), 0, "");
                 // player.setNamePlayer(name.getText());
                 if (!name.getText().isEmpty() && !name.getText().isBlank()) {
                     setPlayer(new PlayerGame(name.getText(), 0));
@@ -616,7 +612,7 @@ public class ScreenGameView {
         anonymous.setOnAction(event -> {
             player.setNamePlayer("anonymous");
             setPlayer(new PlayerGame("anonymous", 0));
-            playerDTO = new high_scoresDTO(null, 0, null);
+            playerDTO = new HighScoresDTO(null, 0, null);
             enterName.close();
             setSettingsToGame();
             gameScreenSnake(gameScreen);
@@ -714,7 +710,7 @@ public class ScreenGameView {
             isPaused = false;
 
             if (playerDTO.getPlayer_name() != null) {
-                hBl = new high_scoresBL();
+                hBl = new HighScoresBL();
                 playerDTO.setScore(player.getScore());
 
                 playerDTO.setSurvived_time(chronometer.getChronometer());
@@ -907,7 +903,6 @@ public class ScreenGameView {
         if (!getRunning())
             chronometer.stopChronometer();
     }
-
     private void draw(GraphicsContext gc) {
         gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 13);
         gc.clearRect(0, 0, SCREENCANVASWIDTH, SCREENHEIGHT);
@@ -928,7 +923,6 @@ public class ScreenGameView {
                         orange.getPositions().get(0)[1] * SNAKEBODY, SNAKEBODY + 10, SNAKEBODY + 10);
             }
         }
-
         gc.setFill(colorSnake[getAux()]);
         for (int[] part : snakeWay) {
             gc.fillRect(part[0] * SNAKEBODY, part[1] * SNAKEBODY, SNAKEBODY, SNAKEBODY);

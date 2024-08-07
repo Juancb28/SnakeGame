@@ -7,12 +7,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import ec.edu.DataAcces.DTO.high_scoresDTO;
+import ec.edu.DataAcces.DTO.HighScoresDTO;
 
 
-public class high_scoresDAO extends SQLiteDataHelper implements IDAO <high_scoresDTO>{
+public class HighScoresDAO extends SQLiteDataHelper implements IDAO <HighScoresDTO>{
     private   Connection conn  ; 
-    public high_scoresDAO() {
+    public HighScoresDAO() {
         try {
             
             conn = opConnection() ;
@@ -21,9 +21,10 @@ public class high_scoresDAO extends SQLiteDataHelper implements IDAO <high_score
         }
     }
 
+    // TODO
     @Override
-    public boolean create(high_scoresDTO entity) throws Exception {
-        String query = "INSERT INTO high_scores (player_name, score, survived_time) VALUES (?,?,?)";
+    public boolean create(HighScoresDTO entity) throws Exception {
+        String query = "INSERT INTO HighScores (player_name, score, survived_time) VALUES (?,?,?)";
         try {
             PreparedStatement pstm = conn.prepareStatement(query);
             if(entity.getPlayer_name()!= null){
@@ -40,20 +41,20 @@ public class high_scoresDAO extends SQLiteDataHelper implements IDAO <high_score
     }
 
     @Override
-    public List<high_scoresDTO> readAll() throws Exception {
-        List<high_scoresDTO> lst = new ArrayList<>(0);
+    public List<HighScoresDTO> readAll() throws Exception {
+        List<HighScoresDTO> lst = new ArrayList<>(0);
         String query = "SELECT           "
-                        +"id                        "     
+                        +"idHighScores                        "     
                         +",player_name               "     
                         +",score                     "     
                         +",survived_time             "     
                         +",FechaCrea                 "
-                        +"FROM high_scores          "   ;
+                        +"FROM HighScores          "   ;
         try {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
-                high_scoresDTO hs = new high_scoresDTO( 
+                HighScoresDTO hs = new HighScoresDTO( 
                                 rs.getInt(1),
                                 rs.getString(2),
                                 rs.getInt(3),
@@ -67,8 +68,8 @@ public class high_scoresDAO extends SQLiteDataHelper implements IDAO <high_score
     }
 
     @Override
-    public boolean update(high_scoresDTO entity) throws Exception {
-        String query = "UPDATE high_scores SET player_name = player_name " ;
+    public boolean update(HighScoresDTO entity) throws Exception {
+        String query = "UPDATE HighScores SET player_name = player_name " ;
         try {
             PreparedStatement pstm = conn.prepareStatement(query);
             if(entity.getPlayer_name()!= null){
@@ -86,21 +87,21 @@ public class high_scoresDAO extends SQLiteDataHelper implements IDAO <high_score
     }
 
     @Override
-    public high_scoresDTO readby(Integer id) throws Exception {
-        high_scoresDTO hs = new high_scoresDTO();
+    public HighScoresDTO readby(Integer id) throws Exception {
+        HighScoresDTO hs = new HighScoresDTO();
         String query = "SELECT           "
-                    +"id                        "     
+                    +"idHighScores                        "     
                     +",player_name               "     
                     +",score                     "     
                     +",survived_time             "     
                     +",FechaCrea                 "
-                    +"FROM high_scores WHERE    "
-                    +"id ="+ id.toString()   ;
+                    +"FROM HighScores WHERE    "
+                    +"idHighScores ="+ id.toString()   ;
          try {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
-                                hs = new high_scoresDTO( 
+                                hs = new HighScoresDTO( 
                                 rs.getInt(1),
                                 rs.getString(2),
                                 rs.getInt(3),

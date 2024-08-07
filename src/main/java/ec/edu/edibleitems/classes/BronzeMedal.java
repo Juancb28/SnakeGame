@@ -5,9 +5,9 @@ import java.util.Objects;
 
 import ec.edu.edibleitems.abstractClasses.Fruit;
 
-public class bronzeMedal extends Fruit {
+public class BronzeMedal extends Fruit {
     
-    public bronzeMedal() {
+    public BronzeMedal() {
         positions.add(placeFood());
     }
 
