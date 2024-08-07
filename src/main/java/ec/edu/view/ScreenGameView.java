@@ -320,7 +320,7 @@ and defines the behavior of keyboard events to initiate.
         playButton.setY(365);
         initialScreenComponents.getChildren().add(playButton);
 
-        Label instructions = new Label("Press Enter to play");
+        Label instructions = new Label("Press 'X' to play");
         instructions.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 15));
         instructions.setTextFill(Color.BLACK);
         instructions.setLayoutX(200);
@@ -827,7 +827,7 @@ and defines the behavior of keyboard events to initiate.
 
         gc.setFill(Color.RED);
         gc.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 13));
-        gc.fillText(" --> Press ENTER to resume game <--", SCREENCANVASWIDTH / 2 - 250, SCREENHEIGHT / 2 + 50);
+        gc.fillText(" --> Press 'X' to resume game <--", SCREENCANVASWIDTH / 2 - 250, SCREENHEIGHT / 2 + 50);
 
         gameScreenScene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
@@ -856,7 +856,7 @@ and defines the behavior of keyboard events to initiate.
 
         gc.setFill(Color.RED);
         gc.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 15));
-        gc.fillText("Presione ENTER para regresar al menú", SCREENCANVASWIDTH / 2 - 250, SCREENHEIGHT / 2 - 10);
+        gc.fillText("Presione 'X' para regresar al menú", SCREENCANVASWIDTH / 2 - 250, SCREENHEIGHT / 2 - 10);
         gameScreenScene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 setSettingsToGame();
