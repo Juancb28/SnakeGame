@@ -3,8 +3,8 @@ import java.io.InputStream;
 import java.util.Objects;
 import ec.edu.edibleitems.abstractClasses.Fruit;
 
-public class silverMedal extends Fruit {
-    public silverMedal() {
+public class SilverMedal extends Fruit {
+    public SilverMedal() {
         positions.add(placeFood());
     }
 
