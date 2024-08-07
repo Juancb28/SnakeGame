@@ -629,6 +629,13 @@ public class ScreenGameView {
 
     }
 
+    /**
+     * This method received by params an Stage which is modified
+     * with an Scene. Start music and is waiting for a KeyFrame
+     * that is pending on specific keywords.
+     * 
+     * @param gameScreen
+     */
     private void gameScreenSnake(Stage gameScreen) {
         if (!isPaused) {
             setMusicPlaying(false);
@@ -670,12 +677,19 @@ public class ScreenGameView {
 
         gameScreen.setScene(gameScreenScene);
 
-        startGame();
+        StartGame();
         timeline.play();
 
     }
 
-    private void startGame() {
+    /**
+     * StartGame Method by default is not paused, set primary
+     * settings such as snakeWay ArrayList puts clear, then adds
+     * head and body to snakeWay ArrayList and Chronometer
+     * init also on MediaPlayer is reset in order to avoid duplicate
+     * sounds.
+     */
+    private void StartGame() {
         if (!isPaused) {
             snakeWay.clear();
             snakeWay.add(new int[] { 22 / 2, 22 / 2 });
@@ -686,6 +700,23 @@ public class ScreenGameView {
         }
     }
 
+    /**
+     * This method check if player is playing or died. Be player
+     * is not playing, launches showMenuAfterGame method. Or sets
+     * new levels onto Apple, RottenApple and Orange classes.
+     * 
+     * Also, allows pause game using ESCAPE keyword which implements
+     * ActionListener.
+     * 
+     * Then recieved snake movements, checks collisions and finally
+     * draw gameScreenGame components.
+     * 
+     * @param gc
+     * @param timeline
+     * @param gameScreen
+     * @param gameScreenScene
+     * @throws Exception
+     */
     private void run(GraphicsContext gc, Timeline timeline, Stage gameScreen, Scene gameScreenScene) throws Exception {
         if (!getRunning()) {
             mp.stopMedia();
@@ -740,6 +771,16 @@ public class ScreenGameView {
         draw(gc);
     }
 
+    /**
+     * This method shows another screen that notify user that is
+     * on waiting mode and can press a specific keyword to resume
+     * game.
+     * 
+     * @param gameScreen
+     * @param gc
+     * @param gameScreenScene
+     * @param timeline
+     */
     private void waitingMode(Stage gameScreen, GraphicsContext gc, Scene gameScreenScene, Timeline timeline) {
         mp.pauseMedia();
         timeline.stop();
@@ -763,6 +804,14 @@ public class ScreenGameView {
 
     }
 
+    /**
+     * If user died, program shows to user a summary with
+     * level, score and survived time gotten.
+     * 
+     * @param gameScreen
+     * @param gc
+     * @param gameScreenScene
+     */
     private void showMenuAfterGame(Stage gameScreen, GraphicsContext gc, Scene gameScreenScene) {
         mp.stopMedia();
         mp.setSongNumber(1);
@@ -780,6 +829,15 @@ public class ScreenGameView {
         });
     }
 
+    /**
+     * Receiving KeyDirection on gameScreenSnake, takes first item in
+     * snake Way ArrayList and operate according to direction taken.
+     * 
+     * @param gc
+     * @param timeline
+     * @param gameScreen
+     * @param gameScreenScene
+     */
     private void moveSnake(GraphicsContext gc, Timeline timeline, Stage gameScreen, Scene gameScreenScene) {
         int[] head = snakeWay.getFirst();
         int newX = head[0];
@@ -850,12 +908,19 @@ public class ScreenGameView {
         }
     }
 
+    /**
+     * Set levels to Apple, RottenApple and Orange classes
+     * to notify changes done after performed an action.
+     */
     private void setNewLevelToClasses() {
         apple.setLevelGame(getLevel());
         rottenApple.setLevelGame(getLevel());
         orange.setLevelGame(getLevel());
     }
 
+    /**
+     * Allows set primary settings to avoid performance problems.
+     */
     private void setSettingsToGame() {
         setRunning(true);
         setLevel(1);
@@ -866,6 +931,16 @@ public class ScreenGameView {
         setSnakeVelocity(200);
     }
 
+    /**
+     * Depending of case, increase snake's velocity to 200ms maximum
+     * or decrease until 80ms minimum.
+     * 
+     * @param gc
+     * @param timeline
+     * @param newSpeedMillis
+     * @param gameScreen
+     * @param gameScreenScene
+     */
     public void increaseDecreasedSpeed(GraphicsContext gc, Timeline timeline, double newSpeedMillis, Stage gameScreen,
             Scene gameScreenScene) {
         KeyFrame keyFrame;
@@ -893,6 +968,9 @@ public class ScreenGameView {
         timeline.play();
     }
 
+    /**
+     * Check if the snake touches outlines or touches itself.
+     */
     private void checkCollision() {
         int[] head = snakeWay.getFirst();
         if (head[0] <= 0 || head[0] >= 39 || head[1] <= 0 || head[1] >= 26) {
@@ -907,6 +985,11 @@ public class ScreenGameView {
         if (!getRunning())
             chronometer.stopChronometer();
     }
+
+    /**
+     * Draw all components that are passed as params.
+     * @param gc
+     */
     private void draw(GraphicsContext gc) {
         gameFont = Font.loadFont(getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 13);
         gc.clearRect(0, 0, SCREENCANVASWIDTH, SCREENHEIGHT);
