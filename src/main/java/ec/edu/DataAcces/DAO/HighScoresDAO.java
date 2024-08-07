@@ -9,9 +9,23 @@ import java.util.List;
 
 import ec.edu.DataAcces.DTO.HighScoresDTO;
 
-
-public class HighScoresDAO extends SQLiteDataHelper implements IDAO <HighScoresDTO>{
+    /**
+     * Clase HighScoresDAO.
+     * 
+     * Esta clase extiende de SQLiteDataHelper e implementa la interfaz IDAO para la entidad HighScoresDTO.
+     * Proporciona métodos para realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) en la tabla
+     * de puntuaciones altas en la base de datos.
+     * 
+     * Código de Casa Antonela.
+     */
+    public class HighScoresDAO extends SQLiteDataHelper implements IDAO <HighScoresDTO>{
     private   Connection conn  ; 
+
+    /**
+     * Constructor de HighScoresDAO.
+     * 
+     * Inicializa la conexión a la base de datos utilizando el método opConnection() de la clase base.
+     */
     public HighScoresDAO() {
         try {
             
@@ -21,6 +35,14 @@ public class HighScoresDAO extends SQLiteDataHelper implements IDAO <HighScoresD
         }
     }
 
+    // TODO
+    /**
+     * Crea un nuevo registro en la tabla HighScores.
+     * 
+     * @param entity Instancia de HighScoresDTO que contiene los datos a insertar.
+     * @return true si el registro se insertó correctamente, false en caso contrario.
+     * @throws Exception Si ocurre un error durante la operación.
+     */
     @Override
     public boolean create(HighScoresDTO entity) throws Exception {
         String query = "INSERT INTO HighScores (player_name, score, survived_time) VALUES (?,?,?)";
@@ -39,6 +61,12 @@ public class HighScoresDAO extends SQLiteDataHelper implements IDAO <HighScoresD
         return false ; 
     }
 
+    /**
+     * Lee todos los registros de la tabla HighScores.
+     * 
+     * @return Lista de objetos HighScoresDTO con los datos de la tabla.
+     * @throws Exception Si ocurre un error durante la operación.
+     */
     @Override
     public List<HighScoresDTO> readAll() throws Exception {
         List<HighScoresDTO> lst = new ArrayList<>(0);
@@ -66,6 +94,14 @@ public class HighScoresDAO extends SQLiteDataHelper implements IDAO <HighScoresD
         return lst ; 
     }
 
+    /**
+     * Actualiza un registro en la tabla HighScores.
+     * 
+     * @param entity Instancia de HighScoresDTO que contiene los datos a actualizar.
+     * @return true si el registro se actualizó correctamente, false en caso contrario.
+     * @throws Exception Si ocurre un error durante la operación.
+     */
+
     @Override
     public boolean update(HighScoresDTO entity) throws Exception {
         String query = "UPDATE HighScores SET player_name = player_name " ;
@@ -80,11 +116,27 @@ public class HighScoresDAO extends SQLiteDataHelper implements IDAO <HighScoresD
         }
         return false ; 
     }
+
+    /**
+     * Elimina un registro en la tabla HighScores.
+     * 
+     * Este método no está implementado y lanzará una excepción si se invoca.
+     * 
+     * @param id Identificador del registro a eliminar.
+     * @throws Exception Si se intenta eliminar un registro.
+     */
     @Override
     public boolean delete(Integer id) throws Exception {
         throw new UnsupportedOperationException("Unimplemented method 'delete'");
     }
 
+    /**
+     * Lee un registro específico de la tabla HighScores por ID.
+     * 
+     * @param id Identificador del registro a leer.
+     * @return Instancia de HighScoresDTO con los datos del registro.
+     * @throws Exception Si ocurre un error durante la operación.
+     */
     @Override
     public HighScoresDTO readby(Integer id) throws Exception {
         HighScoresDTO hs = new HighScoresDTO();
