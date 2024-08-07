@@ -4,6 +4,7 @@
 \............................................................../
  [App]                : SNAKEGAME
         -Date        : 2k24,August, 05
+        -Author      : niurka.yupanqui
         -Version     : 1.0
         -Description : create snakegame entity structures
 \..............................................................*/
