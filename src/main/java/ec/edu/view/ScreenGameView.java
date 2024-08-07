@@ -449,11 +449,7 @@ public class ScreenGameView {
         gameScreen.setScene(menu);
         gameScreen.show();
 
-        root.getChildren().add(imageMenu);
-        root.getChildren().add(newGameButton);
-        root.getChildren().add(newExitGameButton);
-        root.getChildren().add(newBestScoreButton);
-        root.getChildren().add(text1);
+        root.getChildren().addAll(imageMenu,newGameButton,newExitGameButton,newBestScoreButton,text1);
         addInitialScreenComponents(root, rectangle, rectangle1, rectangle2, rectangle3);
 
     }
