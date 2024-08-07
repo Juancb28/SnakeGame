@@ -13,7 +13,9 @@ public class HighScoresBL {
     }
 
     public List<HighScoresDTO> getAll() throws Exception {
-        return hsDao.readAll();
+        List<HighScoresDTO> listBls = hsDao.readAll();
+        listBls.sort((o1, o2) -> o2.getScore() - o1.getScore());
+        return listBls;
     }
 
     public HighScoresDTO readby(int id) throws Exception {
