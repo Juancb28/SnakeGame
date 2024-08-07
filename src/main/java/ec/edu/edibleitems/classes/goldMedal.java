@@ -3,8 +3,8 @@ import java.io.InputStream;
 import java.util.Objects;
 import ec.edu.edibleitems.abstractClasses.Fruit;
 
-public class goldMedal extends Fruit{
-    public goldMedal() {
+public class GoldMedal extends Fruit{
+    public GoldMedal() {
         positions.add(placeFood());
     }
        @Override
