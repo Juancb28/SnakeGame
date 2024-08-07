@@ -3,9 +3,9 @@ package ec.edu.edibleitems.classes;
 import java.io.InputStream;
 import java.util.Objects;
 
-import ec.edu.edibleitems.abstractClasses.Fruit;
+import ec.edu.edibleitems.abstractClasses.SeeImage;
 
-public class Orange extends Fruit {
+public class Orange extends SeeImage {
 
     // Attributes
     private int maxUse;
