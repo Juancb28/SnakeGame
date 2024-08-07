@@ -21,7 +21,6 @@ public class HighScoresDAO extends SQLiteDataHelper implements IDAO <HighScoresD
         }
     }
 
-    // TODO
     @Override
     public boolean create(HighScoresDTO entity) throws Exception {
         String query = "INSERT INTO HighScores (player_name, score, survived_time) VALUES (?,?,?)";
