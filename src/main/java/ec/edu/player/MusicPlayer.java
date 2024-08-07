@@ -20,16 +20,19 @@ public class MusicPlayer implements Initializable {
     private static MediaPlayer mediaPlayer;
 
     // Constructor
+    public MusicPlayer() {
+        setSongNumber(0);
+    }
+
     public void setSongNumber(int songNumber) {
         this.songNumber = songNumber;
     }
-    
 
     // Methods
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         songs = new ArrayList<>();
-        directory = new File("src\\main\\resources\\media");
+        directory = new File("SnakeGame\\src\\main\\resources\\media");
         files = directory.listFiles();
 
         if (files != null) {
@@ -42,7 +45,7 @@ public class MusicPlayer implements Initializable {
         mediaPlayer = new MediaPlayer(media);
     }
 
-    public void changeMedia(int songNumber){
+    public void changeMedia(int songNumber) {
         mediaPlayer.stop();
         media = new Media(songs.get(songNumber).toURI().toString());
         mediaPlayer = new MediaPlayer(media);
@@ -56,11 +59,11 @@ public class MusicPlayer implements Initializable {
         mediaPlayer.pause();
     }
 
-    public void stopMedia(){
+    public void stopMedia() {
         mediaPlayer.stop();
     }
 
-    public void resetMedia(){
+    public void resetMedia() {
         mediaPlayer.seek(Duration.seconds(0));
     }
 }
