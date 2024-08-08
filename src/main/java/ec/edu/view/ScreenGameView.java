@@ -675,7 +675,7 @@ and defines the behavior of keyboard events to initiate.
             mp.stopMedia();
             mp.setSongNumber(2);
             mp.initialize(null, null);
-            mp.playMedia();
+            mp.stopMedia();
         }
         Canvas gameZone = new Canvas(SCREENCANVASWIDTH, SCREENHEIGHT);
         GraphicsContext gc = gameZone.getGraphicsContext2D();
