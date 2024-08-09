@@ -1,0 +1,64 @@
+<mxfile host="65bd71144e">
+    <diagram id="uiG3vPcDS-GI8cdmtBOW" name="Page-1">
+        <mxGraphModel dx="1069" dy="688" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="28" value="" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="19" y="10" width="699" height="385.29" as="geometry"/>
+                </mxCell>
+                <mxCell id="2" value="&lt;font color=&quot;#1a1a1a&quot;&gt;&lt;b&gt;DAC&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/b&gt;&lt;br&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;rotation=-90;gradientColor=#ea6b66;" parent="1" vertex="1">
+                    <mxGeometry x="244.34" y="79.71000000000001" width="65.45" height="348" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="&lt;font color=&quot;#1a1a1a&quot;&gt;&lt;b&gt;HidgScoreDAO&lt;/b&gt;&lt;br&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f9f7ed;strokeColor=#36393d;" parent="1" vertex="1">
+                    <mxGeometry x="129" y="228.5" width="89" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="&lt;font color=&quot;#828282&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;b style=&quot;&quot;&gt;Arquitectura N-TIER&lt;/b&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;labelBackgroundColor=none;fontColor=#333333;" parent="1" vertex="1">
+                    <mxGeometry x="69.68" y="16" width="245" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="&lt;font color=&quot;#1a1a1a&quot;&gt;&lt;b&gt;Data Helper&lt;/b&gt;&lt;br&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f9f7ed;strokeColor=#36393d;" parent="1" vertex="1">
+                    <mxGeometry x="386" y="228.49999999999997" width="58" height="47" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="&lt;font color=&quot;#1a1a1a&quot;&gt;&lt;b&gt;Framework&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;gradientColor=#7ea6e0;" parent="1" vertex="1">
+                    <mxGeometry x="465" y="53.5" width="125" height="234.13" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="&lt;span style=&quot;&quot;&gt;&lt;font color=&quot;#000000&quot;&gt;&lt;b&gt;pom.xml&lt;/b&gt;&lt;/font&gt;&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=none;gradientColor=#b3b3b3;" parent="1" vertex="1">
+                    <mxGeometry x="482.4" y="110.63" width="90.19" height="25.56" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="&lt;font color=&quot;#1a1a1a&quot;&gt;&lt;b&gt;Business&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/b&gt;&lt;br&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;rotation=-90;gradientColor=#97d077;" parent="1" vertex="1">
+                    <mxGeometry x="241.34" y="7.710000000000001" width="71.2" height="345" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="&lt;font color=&quot;#1a1a1a&quot;&gt;&lt;b&gt;HigdScoreBL&lt;/b&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;gradientColor=#b3b3b3;" parent="1" vertex="1">
+                    <mxGeometry x="243.86" y="156.71" width="86" height="47" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="&lt;b style=&quot;&quot;&gt;&lt;font color=&quot;#4d4d4d&quot;&gt;Data&lt;br&gt;Sources&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/font&gt;&lt;br&gt;&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#b85450;rotation=-90;gradientColor=#ea6b66;" parent="1" vertex="1">
+                    <mxGeometry x="149" y="249.83" width="86.37" height="175.59" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="&lt;font color=&quot;#1a1a1a&quot;&gt;&lt;b&gt;User&lt;br&gt;Interface&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/b&gt;&lt;br&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcc99;strokeColor=#36393d;rotation=-90;" parent="1" vertex="1">
+                    <mxGeometry x="233.63" y="-77" width="86.37" height="350" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="&lt;font color=&quot;#1a1a1a&quot;&gt;UI Component&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;gradientColor=#b3b3b3;" parent="1" vertex="1">
+                    <mxGeometry x="154.55" y="64.63" width="131.45" height="28.62" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="&lt;span style=&quot;color: rgb(26, 26, 26);&quot;&gt;ScreenGame View&lt;br&gt;(Java Fx)&lt;br&gt;&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;gradientColor=#b3b3b3;" parent="1" vertex="1">
+                    <mxGeometry x="292" y="64.63" width="73" height="64" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="&lt;span style=&quot;color: rgb(26, 26, 26);&quot;&gt;Main&amp;nbsp;&lt;br&gt;(JavaFx)&lt;br&gt;&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;gradientColor=#b3b3b3;" parent="1" vertex="1">
+                    <mxGeometry x="369" y="66" width="69" height="64" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="&lt;b&gt;&lt;font color=&quot;#990000&quot;&gt;SQLITE&lt;/font&gt;&lt;/b&gt;" style="verticalLabelPosition=bottom;html=1;verticalAlign=top;align=center;strokeColor=#6F0000;fillColor=#a20025;shape=mxgraph.azure.sql_reporting;fontColor=#ffffff;" parent="1" vertex="1">
+                    <mxGeometry x="170.07" y="314.63" width="38.95" height="46" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" value="&lt;font color=&quot;#1a1a1a&quot;&gt;&lt;b&gt;IDAO&lt;/b&gt;&lt;br&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f9f7ed;strokeColor=#36393d;" parent="1" vertex="1">
+                    <mxGeometry x="325" y="228.49999999999997" width="58" height="47" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="&lt;b style=&quot;color: rgb(26, 26, 26);&quot;&gt;HidgScoreDTO&lt;/b&gt;&lt;font color=&quot;#1a1a1a&quot;&gt;&lt;br&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f9f7ed;strokeColor=#36393d;" parent="1" vertex="1">
+                    <mxGeometry x="222" y="228.5" width="98" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" value="&lt;font color=&quot;#1a1a1a&quot;&gt;Controler UIC&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;gradientColor=#b3b3b3;" parent="1" vertex="1">
+                    <mxGeometry x="154.55" y="98.63" width="131.45" height="28.62" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
