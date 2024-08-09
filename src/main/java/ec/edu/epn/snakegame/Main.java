@@ -29,12 +29,11 @@ public class Main extends Application {
         Scene gameScreenScene = new Scene(gameScreenComponents, SCREENCANVASWIDTH, SCREENHEIGHT);
 
         //Set stage to a specific size
+        gameScreen.centerOnScreen();
         gameScreen.setScene(gameScreenScene);
         gameScreen.setResizable(false);
         gameScreen.setWidth(800);
         gameScreen.setHeight(600);
-        gameScreen.setX(540);
-        gameScreen.setY(240);
         gameScreen.show();
 
         //Set icon to app
