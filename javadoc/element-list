@@ -1,0 +1,11 @@
+module:ec.edu.epn.snakegame
+ec.edu
+ec.edu.BusinessLogic
+ec.edu.DataAcces.DAO
+ec.edu.DataAcces.DTO
+ec.edu.edibleitems.abstractClasses
+ec.edu.edibleitems.classes
+ec.edu.epn.snakegame
+ec.edu.player
+ec.edu.view
+utils
