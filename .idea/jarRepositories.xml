@@ -3,7 +3,11 @@
   <component name="RemoteRepositoriesConfiguration">
     <remote-repository>
       <option name="id" value="central" />
+<<<<<<< HEAD
       <option name="name" value="central" />
+=======
+      <option name="name" value="Central Repository" />
+>>>>>>> 123d9369b905d269fded8cd64e63e94f2cd95d33
       <option name="url" value="https://repo.maven.apache.org/maven2" />
     </remote-repository>
     <remote-repository>
